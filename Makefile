@@ -1,6 +1,6 @@
 CC				=	gcc
 NAME			=	fillit
-FLAGS			=	#-Wall -Wextra -Werror
+FLAGS			=	-Wall -Wextra -Werror
 LIB_PATH		=	libft/
 LIB				=	$(LIB_PATH)libft.a
 LIB_LINK		=	-L $(LIB_PATH) -lft
@@ -23,7 +23,7 @@ OK				=	$(C_OK)OK$(C_NO)
 all: obj $(NAME)
 
 $(NAME): $(LIB) $(OBJS)
-	@$(CC) $(FLAGS) $(LIB_LINK) -o $@ $^
+	@$(CC) $(FLAGS) -o $@ $^ $(LIB_LINK)
 	@echo "Compiling" [ $(NAME) ] $(SUCCESS)
 
 $(LIB):
@@ -33,7 +33,7 @@ obj:
 	@mkdir -p obj
 
 obj/%.o: src/%.c ./includes/*.h
-	@$(CC) $(FLAGS) $(INCLUDES) -c -o $@ $<
+	$(CC) $(FLAGS) $(INCLUDES) -c -o $@ $< $(LIB_LINK)
 	@echo "Linking" [ $< ] $(OK)
 
 clean:
