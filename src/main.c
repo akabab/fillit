@@ -73,11 +73,42 @@ int		parse_tetrimino(fd)
 int		parse(int fd)
 {
 	t_tetrimino		tetriminos[26];
+	char			buffer[BUFFER_SIZE + 1];
+	int				ret;
 
-	while (parse_tetrimino(fd))
+	ft_bzero(buffer, BUFFER_SIZE + 1);
+	ft_printf("Reading [0-%d] chars...\n", BUFFER_SIZE);
+	ret = read(fd, buffer, BUFFER_SIZE);
+	if (ret == -1)
 	{
-
+		// handle error
+		ft_putendl("read error");
+		ft_perror(NULL);
+		return (0);
 	}
+	if (ret == 0)
+	{
+		// empty file ?
+		ft_putendl("nothing to read");
+		return (0);
+	}
+	ft_printf("did read %d chars\n", ret);
+	if (ret >= BUFFER_SIZE)
+	{
+		// handle error
+		ft_printf("too much chars read -> %d\n", ret);
+		return (0);
+	}
+	if ((ret + 1) % (MAX_TETRIMINO_SIZE + 1))
+	{
+		ft_putendl("invalid char count read");
+		return (0);
+	}
+	ft_putendl("Parsing OK");
+	// while (parse_tetrimino(fd))
+	// {
+
+	// }
 	return (0);
 }
 
