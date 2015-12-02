@@ -18,7 +18,11 @@ void	get_binary_represention(t_tetrimino tetrimino)
 		// try [OPTI -> cast (int) move 4 by 4]
 
 		if (*raw == CHAR_BLOCK)
+		{
 			tetrimino.value |= 1 << i;
+			tetrimino.bi_value |= 1 << ( i / 4);
+
+		}
 		else if (*raw != CHAR_EMPTY)
 		{
 			// handle error

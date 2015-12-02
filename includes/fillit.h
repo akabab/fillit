@@ -25,6 +25,7 @@ typedef struct	s_tetrimino
 	char		index; // [A-Z] index
 	char		*raw;
 	int			value; // top-left binary value
+	int			bi_value;
 }				t_tetrimino;
 
 #endif
