@@ -23,7 +23,7 @@ OK				=	$(C_OK)OK$(C_NO)
 all: obj $(NAME)
 
 $(NAME): $(LIB) $(OBJS)
-	@$(CC) $(FLAGS) -o $@ $^ $(LIB_LINK)
+	@$(CC) $(FLAGS) -o $@ $^ $(LIB_LINK) 
 	@echo "Compiling" [ $(NAME) ] $(SUCCESS)
 
 $(LIB):
