@@ -6,9 +6,9 @@
 
 # define TETRIMINO_WIDTH		(4 + 1)
 # define TETRIMINO_HEIGHT		4
-# define MAX_TETRIMINO			(TETRIMINO_WIDTH * TETRIMINO_HEIGHT)
-# define MAX_TETRIMINO_SIZE		(4 * 5)
-# define BUFFER_SIZE			((MAX_TETRIMINO_SIZE * MAX_T_SIZE) + 1)
+# define MAX_TETRIMINOS			26
+# define MAX_TETRIMINO_SIZE		(TETRIMINO_WIDTH * TETRIMINO_HEIGHT)
+# define BUFFER_SIZE			(MAX_TETRIMINOS * (MAX_TETRIMINO_SIZE + 1))
 
 typedef enum	e_mask
 {
@@ -17,8 +17,6 @@ typedef enum	e_mask
 	BOTTOM_MASK = 0x000F, // 0000 0000 0000 1111
 	RIGHT_MASK  = 0x1111  // 0001 0001 0001 0001
 }				t_mask;
-
-// 0000 0000 0011 0011
 
 typedef struct	s_tetrimino
 {
