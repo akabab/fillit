@@ -5,7 +5,9 @@ LIB_PATH		=	libft/
 LIB				=	$(LIB_PATH)libft.a
 LIB_LINK		=	-L $(LIB_PATH) -lft
 INCLUDES		=	-I $(LIB_PATH)includes -I ./includes
-SRCS			=	src/main.c
+SRCS			=	src/main.c			\
+					src/parse.c			\
+					src/move.c
 OBJS			=	$(SRCS:src/%.c=obj/%.o)
 
 # COLORS

@@ -10,6 +10,8 @@
 # define MAX_TETRIMINO_SIZE		(TETRIMINO_WIDTH * TETRIMINO_HEIGHT)
 # define BUFFER_SIZE			(MAX_TETRIMINOS * (MAX_TETRIMINO_SIZE + 1))
 
+# define TETRI_PATTERNS_COUNT	19
+
 typedef enum	e_mask
 {
 	TOP_MASK    = 0xF000, // 1111 0000 0000 0000
@@ -20,9 +22,28 @@ typedef enum	e_mask
 
 typedef struct	s_tetrimino
 {
-	char		index; // [A-Z] index
 	char		*raw;
 	int			value; // top-left binary value
+	int			offset_x;
+	int			offset_y;
 }				t_tetrimino;
+
+typedef enum	e_direction
+{
+	TOP,
+	LEFT,
+	BOTTOM,
+	RIGHT
+}				t_direction;
+
+/*
+**		parse.c
+*/
+int			parse(int fd, t_tetrimino tetriminos[]);
+
+/*
+**		move.c
+*/
+int			move(int value, t_direction direction);
 
 #endif
