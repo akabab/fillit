@@ -4,9 +4,9 @@
 
 #include <stdio.h> //
 
-void	print_16bit_representation_of_int(int value)
+void	print_16bit_representation_of_int(uint16_t value)
 {
-	int		mask;
+	uint16_t		mask;
 	int		i;
 
 	mask = 1 << 15;
@@ -90,6 +90,21 @@ uint16_t		raw_to_binary_represention(char *raw)
 	return (value);
 }
 
+void		set_v(t_tetrimino t)
+{
+	int			i;
+	uint16_t	mask;
+
+	mask = 0xF000;
+	i = 0;
+	while (i < 4)
+	{
+		t.v[i] = (t.value & mask) << (i * 4);
+		mask >>= 4;
+		i++;
+	}
+}
+
 int			parse(int fd, t_tetrimino tetriminos[MAX_TETRIMINOS])
 {
 	char	buffer[BUFFER_SIZE + 1];
@@ -161,6 +176,7 @@ int			parse(int fd, t_tetrimino tetriminos[MAX_TETRIMINOS])
 		tetriminos[tetri_index].index = tetri_index;
 		tetriminos[tetri_index].raw = t_raw;
 		tetriminos[tetri_index].value = raw_to_binary_represention(t_raw);
+		set_v(tetriminos[tetri_index]);
 		tetriminos[tetri_index].offset_x = 0;
 		tetriminos[tetri_index].offset_y = 0;
 

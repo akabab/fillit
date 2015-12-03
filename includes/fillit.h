@@ -26,7 +26,8 @@ typedef struct	s_tetrimino
 {
 	int			index;
 	char		*raw;
-	uint16_t	value; // top-left binary value
+	uint16_t	value;
+	uint16_t	v[4];
 	int			offset_x;
 	int			offset_y;
 }				t_tetrimino;
@@ -50,6 +51,6 @@ int			parse(int fd, t_tetrimino tetriminos[]);
 int			move(int value, t_direction direction);
 
 // DEBUG
-void	print_16bit_representation_of_int(int value);
+void	print_16bit_representation_of_int(uint16_t value);
 
 #endif
