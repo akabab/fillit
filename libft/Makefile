@@ -81,7 +81,6 @@ SRCS	=	ft_memset.c					\
 			ft_power.c					\
 			degree_radian.c				\
 			ft_nbrlen.c					\
-			ft_perror.c					\
 			free.c						\
 			dlist.c						\
 			dlist_node.c				\

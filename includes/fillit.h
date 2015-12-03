@@ -1,6 +1,7 @@
 #ifndef __FILLIT_H__
 # define __FILLIT_H__
 
+# include <stdint.h>
 # include "stdint.h"
 
 # define CHAR_EMPTY				'.'
@@ -13,6 +14,8 @@
 # define BUFFER_SIZE			(MAX_TETRIMINOS * (MAX_TETRIMINO_SIZE + 1))
 
 # define TETRI_PATTERNS_COUNT	19
+
+# include "../libft/includes/libft.h"
 
 typedef enum	e_mask
 {
@@ -27,6 +30,7 @@ typedef struct	s_tetrimino
 	int			index;
 	char		*raw;
 	uint16_t	value; // top-left binary value
+	uint16_t	hvalue;
 	int			offset_x;
 	int			offset_y;
 }				t_tetrimino;
@@ -50,6 +54,8 @@ int			parse(int fd, t_tetrimino tetriminos[]);
 int			move(int value, t_direction direction);
 
 // DEBUG
-void	print_16bit_representation_of_int(int value);
+void	print_16bit_representation_of_int(uint16_t value);
+void	print_tetriminos(int toto);
+void	print_tetriminos_long(unsigned long toto);
 
 #endif

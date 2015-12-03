@@ -4,7 +4,7 @@
 
 #include <stdio.h> //
 
-void	print_16bit_representation_of_int(int value)
+void	print_16bit_representation_of_int(uint16_t value)
 {
 	int		mask;
 	int		i;
@@ -67,10 +67,42 @@ uint16_t		move_to_most_top_left_position(uint16_t value)
 	return (value);
 }
 
+uint16_t		hraw_to_binary_represention(char *raw)
+{
+	int				i;
+	int				j;
+	uint16_t			hvalue;
+
+	hvalue = 0x0000;
+	i = 0xF;
+	j = 0x1;
+	while (*raw)
+	{
+		// try [OPTI -> cast (int) move 4 by 4]
+		if (*raw == CHAR_BLOCK)
+		{
+			hvalue |= 1 << i;
+		}
+		raw++;
+		i -= 4;
+		if (i < 0)
+		{
+			i = 0xF - j;
+			j++;
+		}
+	}
+	print_16bit_representation_of_int(hvalue);
+	// move tetrimino to most top-left position !!
+	hvalue = move_to_most_top_left_position(hvalue);
+	print_16bit_representation_of_int(hvalue);
+	// check if valid
+	return (hvalue);
+}
+
 uint16_t		raw_to_binary_represention(char *raw)
 {
 	int				i;
-	uint16_t		value;
+	uint16_t			value;
 
 	value = 0x0000;
 	i = 0xF;
@@ -78,7 +110,9 @@ uint16_t		raw_to_binary_represention(char *raw)
 	{
 		// try [OPTI -> cast (int) move 4 by 4]
 		if (*raw == CHAR_BLOCK)
+		{
 			value |= 1 << i;
+		}
 		raw++;
 		i--;
 	}
@@ -86,7 +120,7 @@ uint16_t		raw_to_binary_represention(char *raw)
 	value = move_to_most_top_left_position(value);
 	// check if valid
 	if (!is_correct_pattern(value))
-		error_msg_exit("invalid pattern");
+		ft_putendl("invalid pattern");
 	return (value);
 }
 
@@ -99,12 +133,12 @@ int			parse(int fd, t_tetrimino tetriminos[MAX_TETRIMINOS])
 	// read
 	char_count = read(fd, buffer, BUFFER_SIZE);
 	if (char_count == -1)
-		error_msg_exit("read failed");
+		ft_putendl("read failed");
 	printf("read -> OK\n");
 
 	// check length
 	if (char_count == 0 || ((char_count + 1) % (MAX_TETRIMINO_SIZE + 1)) != 0)
-		error_msg_exit("invalid file length");
+		ft_putendl("invalid file length");
 	printf("check length -> OK\n");
 
 	// check chars
@@ -113,13 +147,13 @@ int			parse(int fd, t_tetrimino tetriminos[MAX_TETRIMINOS])
 	while (sep < char_count)
 	{
 		if (buffer[sep-1] != '\n')
-			error_msg_exit("invalid separator: must be \\n");
+			ft_putendl("invalid separator: must be \\n");
 		buffer[sep-1] = '@';
 		sep += 21;
 	}
 	char	**tetriminos_tab;
 	if (!(tetriminos_tab = ft_strsplit(buffer, '@')))
-		error_msg_exit("split failed");
+		ft_putendl("split failed");
 
 	char	**tmp;
 	tmp = tetriminos_tab;
@@ -137,13 +171,13 @@ int			parse(int fd, t_tetrimino tetriminos[MAX_TETRIMINOS])
 		{
 			if ((((i + 1) % 5) == 0 && tetrimino_raw_string[i] != '\n')
 				&& (tetrimino_raw_string[i] != CHAR_BLOCK && tetrimino_raw_string[i] != CHAR_EMPTY))
-				error_msg_exit("invalid char");
+				ft_putendl("invalid char");
 			i++;
 		}
 		char	**t_tab;
 
 		if (!(t_tab = ft_strsplit(tetrimino_raw_string, '\n')))
-			error_msg_exit("split 2 failed");
+			ft_putendl("split 2 failed");
 
 		char	**tmp2;
 		char	*t_raw;
@@ -161,6 +195,7 @@ int			parse(int fd, t_tetrimino tetriminos[MAX_TETRIMINOS])
 		tetriminos[tetri_index].index = tetri_index;
 		tetriminos[tetri_index].raw = t_raw;
 		tetriminos[tetri_index].value = raw_to_binary_represention(t_raw);
+		tetriminos[tetri_index].hvalue = hraw_to_binary_represention(t_raw);
 		tetriminos[tetri_index].offset_x = 0;
 		tetriminos[tetri_index].offset_y = 0;
 
