@@ -76,7 +76,7 @@ t_bool		solve(t_map *map, int tetri_index);
 /*
 **		print.c
 */
-void		print_16bit_representation_of_int(uint16_t value, int sep);
+void		print_16bit_representation_of_int(uint16_t value, int sep, int limit);
 void		print_map(t_map *map);
 void		print_result_map(t_map *map);
 

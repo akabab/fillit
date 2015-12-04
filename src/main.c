@@ -9,7 +9,7 @@
 void	test_bit_shifting()
 {
 	uint16_t	t = -1;
-	print_16bit_representation_of_int(t, 4);
+	print_16bit_representation_of_int(t, 4, 4);
 }
 
 void	reset_offsets(t_tetrimino t[], int t_count)
@@ -59,6 +59,7 @@ int		main(int ac, char *av[])
 	map.size = 2;
 	while (map.size < 16)
 	{
+		printf("try map of size: %d\n", map.size);
 		if (solve(&map, 0))
 		{
 			print_map(&map);

@@ -5,21 +5,21 @@ void		print_map(t_map *map)
 {
 	int		i;
 
-	while (i < 16)
+	while (i < map->size)
 	{
-		print_16bit_representation_of_int(map->m[i], 1);
+		print_16bit_representation_of_int(map->m[i], 1, map->size);
 		i++;
 	}
 }
 
-void		print_16bit_representation_of_int(uint16_t value, int sep)
+void		print_16bit_representation_of_int(uint16_t value, int sep, int limit)
 {
 	uint16_t	mask;
 	int			i;
 
 	mask = 0x1 << 15;
 	i = 1;
-	while (mask > 0)
+	while (mask > 0 && limit--)
 	{
 		if (value & mask)
 			ft_putchar('1');
@@ -81,5 +81,5 @@ void		print_result_map(t_map *map)
 		write_treti_in_result_map(r_map, map->size, &map->t[tetri_index], tetri_index);
 		++tetri_index;
 	}
-	ft_putendl(r_map);
+	ft_putstr(r_map);
 }

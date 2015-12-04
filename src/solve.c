@@ -31,8 +31,26 @@ t_bool		place(t_map *map, t_tetrimino *t)
 		// print_map(map);
 		i++;
 	}
-	print_map(map);
+	// print_map(map);
 	return (TRUE);
+}
+
+void		reset_position(t_map *map, t_tetrimino *t)
+{
+	int			i;
+	uint16_t	tmp_v[4];
+
+	printf("before reset\n");
+	print_map(map);
+	i = 0;
+	while (i < 4) // t->height
+	{
+		tmp_v[i] = t->v[i] >> t->offset_x;
+		map->m[i + t->offset_y] &= ~tmp_v[i];
+		++i;
+	}
+	printf("after reset\n");
+	print_map(map);
 }
 
 t_bool		solve(t_map *map, int tetri_index)
@@ -54,14 +72,18 @@ t_bool		solve(t_map *map, int tetri_index)
 			if (place(map, t))
 			{
 				printf("did place at [%d, %d]\n", t->offset_x, t->offset_y);
+				print_map(map);
 				if (solve(map, tetri_index + 1))
 					return (1);
+				reset_position(map, t);
+				// and reset next tetri offsets
+				map->t[tetri_index + 1].offset_x = 0;
+				map->t[tetri_index + 1].offset_y = 0;
 			}
 			t->offset_x++;
 		}
 		t->offset_y++;
 	}
-	// what happen here
-	printf("could not place tetri\n");
+	printf("could not place tetri [%d]\n", tetri_index);
 	return (0);
 }
