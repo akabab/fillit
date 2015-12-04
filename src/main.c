@@ -27,21 +27,16 @@ t_bool	collide(t_tetrimino tetri_a, t_tetrimino tetri_b)
 
 void	test_bit_shifting()
 {
-	uint16_t	t = 1 << 1;
-	print_16bit_representation_of_int(t);
-	t >>= 2;
-	print_16bit_representation_of_int(t);
-	t <<= 2;
+	uint16_t	t = -1;
 	print_16bit_representation_of_int(t);
 }
 
 int		main(int ac, char *av[])
 {
 	int				fd;
-	t_tetrimino		tetriminos[MAX_TETRIMINOS];
-	int				tetriminos_count;
+	t_map			map = {0};
 
-	// test_bit_shifting();
+	// test_bit_shifting(); return (-1);
 	if (ac != 2)
 	{
 		ft_printf("Usage..\n");
@@ -54,22 +49,17 @@ int		main(int ac, char *av[])
 		return (-1);
 	}
 	// PARSE
-	tetriminos_count = parse(fd, tetriminos);
+	map.t_count = parse(fd, map.t);
 
 	// VERIF
 	// int i = 0;
-	// while (i < tetriminos_count)
+	// while (i < map.t_count)
 	// {
-	// 	printf("%s -> %d\n", tetriminos[i].raw, tetriminos[i].value);
+	// 	printf("%s -> %d\n", map.t[i].raw, map.t[i].value);
 	// 	i++;
 	// }
 
 	// RESOLVE
 	// ...
-	tetriminos[0].offset_x = 3;
-	tetriminos[0].offset_y = 1;
-	tetriminos[1].offset_x = 1;
-	tetriminos[1].offset_y = 2;
-	printf("%scollide\n", collide(tetriminos[0], tetriminos[1]) ? "" : "not ");
 	return (0);
 }

@@ -1,7 +1,9 @@
 #ifndef __FILLIT_H__
 # define __FILLIT_H__
 
-# include "stdint.h"
+# include <stdint.h>
+
+# include <stdio.h> //
 
 # define CHAR_EMPTY				'.'
 # define CHAR_BLOCK				'#'
@@ -22,6 +24,12 @@ typedef enum	e_mask
 	RIGHT_MASK  = 0x1111  // 0001 0001 0001 0001
 }				t_mask;
 
+// typedef union	u_t_value
+// {
+// 	uint16_t	v[4];
+// 	uint64_t	value;
+// }				t_t_value;
+
 typedef struct	s_tetrimino
 {
 	int			index;
@@ -39,6 +47,14 @@ typedef enum	e_direction
 	BOTTOM = +4,
 	RIGHT  = +1
 }				t_direction;
+
+typedef struct	s_map
+{
+	t_tetrimino	t[MAX_TETRIMINOS];
+	int			t_count;
+	uint16_t	m[16];
+	int			size;
+}				t_map;
 
 /*
 **		parse.c
