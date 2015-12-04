@@ -46,16 +46,15 @@ int		main(int ac, char *av[])
 	map.t_count = parse(fd, map.t);
 
 	// VERIF
-	// int i = 0;
-	// while (i < map.t_count)
-	// {
-	// 	printf("%s -> %d\n", map.t[i].raw, map.t[i].value);
-	// 	i++;
-	// }
+	int i = 0;
+	while (i < map.t_count)
+	{
+		printf("%s -> %d, w: %d, h: %d\n", map.t[i].raw, map.t[i].value, map.t[i].width, map.t[i].height);
+		i++;
+	}
 
 	// RESOLVE
 	int		size;
-	printf("sizeof array = %lu\n", sizeof(map.m));
 	// size = ft_sqrt(map.t_count * 4);
 	map.size = 2;
 	while (map.size < 16)

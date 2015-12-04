@@ -47,10 +47,10 @@ t_bool		solve(t_map *map, int tetri_index)
 	}
 	printf("solve call: [%d]\n", tetri_index);
 	t = &map->t[tetri_index];
-	while (t->offset_y /* + t->height <= */ < map->size) // pas en buté avec la map en bas
+	while (t->offset_y + t->height <= map->size) // pas en buté avec la map en bas
 	{
 		t->offset_x = 0;
-		while (t->offset_x /* + t->width <= */ < map->size) // pas en buté avec la map a droite
+		while (t->offset_x + t->width <= map->size) // pas en buté avec la map a droite
 		{
 			if (place(map, t))
 			{

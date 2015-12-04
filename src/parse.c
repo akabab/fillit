@@ -65,6 +65,20 @@ uint16_t		raw_to_binary_represention(char *raw)
 	return (value);
 }
 
+// 1111 ->4 || 1110 ->3 || 1100 ->2 || 1000 ->1
+int			get_width(uint16_t v)
+{
+	int		width;
+
+	width = 4;
+	while (width && !(v & 0x1000))
+	{
+		v >>= 1;
+		width--;
+	}
+	return (width);
+}
+
 void		set_v(t_tetrimino *t)
 {
 	int			i;
@@ -75,6 +89,11 @@ void		set_v(t_tetrimino *t)
 	while (i < 4)
 	{
 		t->v[i] = (t->value & mask) << (i * 4);
+		if (t->v[i])
+		{
+			t->height++;
+			t->width = ft_max(t->width, get_width(t->v[i]));
+		}
 		mask >>= 4;
 		++i;
 	}

@@ -77,6 +77,7 @@ SRCS	=	ft_memset.c					\
 			ft_lstmap.c					\
 			ft_lstpush.c				\
 			ft_min.c					\
+			ft_max.c					\
 			ft_abs.c					\
 			ft_power.c					\
 			degree_radian.c				\
