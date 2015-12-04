@@ -42,11 +42,11 @@ void		write_treti_in_result_map(char *r_map, int map_size, t_tetrimino *t, int t
 
 	mask = 0x1 << 15;
 	i = 0;
-	while (i < 4) // t->height
+	while (i < t->height) // t->height
 	{
 		j = 0;
 		val = t->v[i];
-		while (j < 4) // t->width
+		while (j < t->width) // t->width
 		{
 			if (val & mask)
 				r_map[(t->offset_y + i) * (map_size + 1) + (t->offset_x + j)] = 'A' + tetri_index;
