@@ -29,7 +29,6 @@ t_bool		place(t_map *map, t_tetrimino *t)
 		// printf("tmp_v[%d] = %d\n", i, tmp_v[i]);
 		map->m[i + t->offset_y] |= tmp_v[i];
 		// print_map(map);
-
 		i++;
 	}
 	print_map(map);
@@ -62,5 +61,7 @@ t_bool		solve(t_map *map, int tetri_index)
 		}
 		t->offset_y++;
 	}
+	// what happen here
+	printf("could not place tetri\n");
 	return (0);
 }

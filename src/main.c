@@ -63,6 +63,7 @@ int		main(int ac, char *av[])
 		{
 			print_map(&map);
 			printf("solved with size: %d\n", map.size);
+			print_result_map(&map);
 			break;
 		}
 		//reset map & offsets
@@ -70,5 +71,6 @@ int		main(int ac, char *av[])
 		reset_offsets(map.t, map.t_count);
 		map.size++;
 	}
+
 	return (0);
 }
