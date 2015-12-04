@@ -4,31 +4,6 @@
 
 #include <stdio.h> //
 
-void	print_16bit_representation_of_int(uint16_t value)
-{
-	uint16_t		mask;
-	int		i;
-
-	mask = 1 << 15;
-	i = 0;
-	while (mask > 0)
-	{
-		if (value & mask)
-			ft_putchar('1');
-		else
-			ft_putchar('0');
-		if (i == 3)
-		{
-			ft_putchar(' ');
-			i = 0;
-		}
-		else
-			i++;
-		mask >>= 1;
-	}
-	ft_putchar('\n');
-}
-
 t_bool	is_correct_pattern(uint16_t value)
 {
 	static const uint16_t	correct_patterns[TETRI_PATTERNS_COUNT] = {
@@ -63,7 +38,7 @@ uint16_t		move_to_most_top_left_position(uint16_t value)
 		value = move(value, TOP);
 	}
 	// printf("value = %d\n", value);
-	// print_16bit_representation_of_int(value);
+	print_16bit_representation_of_int(value, 4);
 	return (value);
 }
 
@@ -90,7 +65,7 @@ uint16_t		raw_to_binary_represention(char *raw)
 	return (value);
 }
 
-void		set_v(t_tetrimino t)
+void		set_v(t_tetrimino *t)
 {
 	int			i;
 	uint16_t	mask;
@@ -99,9 +74,9 @@ void		set_v(t_tetrimino t)
 	i = 0;
 	while (i < 4)
 	{
-		t.v[i] = (t.value & mask) << (i * 4);
+		t->v[i] = (t->value & mask) << (i * 4);
 		mask >>= 4;
-		i++;
+		++i;
 	}
 }
 
@@ -176,7 +151,7 @@ int			parse(int fd, t_tetrimino tetriminos[MAX_TETRIMINOS])
 		tetriminos[tetri_index].index = tetri_index;
 		tetriminos[tetri_index].raw = t_raw;
 		tetriminos[tetri_index].value = raw_to_binary_represention(t_raw);
-		set_v(tetriminos[tetri_index]);
+		set_v(&tetriminos[tetri_index]);
 		tetriminos[tetri_index].offset_x = 0;
 		tetriminos[tetri_index].offset_y = 0;
 

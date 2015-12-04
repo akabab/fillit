@@ -6,29 +6,23 @@
 
 #include <stdio.h> //
 
-// [OPTI] -> by ref instead of copy ( is struct copied ? )
-t_bool	collide(t_tetrimino tetri_a, t_tetrimino tetri_b)
-{
-	// uint16_t	tmp_a_value;
-	uint16_t	tmp_b_value;
-	int			delta_x;
-	int			delta_y;
-
-	delta_x = tetri_b.offset_x - tetri_a.offset_x;
-	delta_y = tetri_b.offset_y - tetri_a.offset_y;
-	if (ft_abs(delta_x) >= 4 || ft_abs(delta_y) >= 4)
-		return (FALSE);
-	// clusterize
-	tmp_b_value = move(tetri_b.value, delta_x + (delta_y * 4));
-	if (tetri_a.value & tmp_b_value)
-		return (TRUE);
-	return (FALSE);
-}
-
 void	test_bit_shifting()
 {
 	uint16_t	t = -1;
-	print_16bit_representation_of_int(t);
+	print_16bit_representation_of_int(t, 4);
+}
+
+void	reset_offsets(t_tetrimino t[], int t_count)
+{
+	int		i;
+
+	i = 0;
+	while (i < t_count)
+	{
+		t[i].offset_x = 0;
+		t[i].offset_y = 0;
+		++i;
+	}
 }
 
 int		main(int ac, char *av[])
@@ -60,6 +54,22 @@ int		main(int ac, char *av[])
 	// }
 
 	// RESOLVE
-	// ...
+	int		size;
+	printf("sizeof array = %lu\n", sizeof(map.m));
+	// size = ft_sqrt(map.t_count * 4);
+	map.size = 2;
+	while (map.size < 16)
+	{
+		if (solve(&map, 0))
+		{
+			print_map(&map);
+			printf("solved with size: %d\n", map.size);
+			break;
+		}
+		//reset map & offsets
+		ft_bzero(&map.m, sizeof(map.m));
+		reset_offsets(map.t, map.t_count);
+		map.size++;
+	}
 	return (0);
 }

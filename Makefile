@@ -7,6 +7,8 @@ LIB_LINK		=	-L $(LIB_PATH) -lft
 INCLUDES		=	-I $(LIB_PATH)includes -I ./includes
 SRCS			=	src/main.c			\
 					src/parse.c			\
+					src/solve.c			\
+					src/print.c			\
 					src/move.c
 OBJS			=	$(SRCS:src/%.c=obj/%.o)
 

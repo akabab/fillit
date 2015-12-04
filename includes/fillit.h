@@ -2,7 +2,7 @@
 # define __FILLIT_H__
 
 # include <stdint.h>
-
+# include "libft.h"
 # include <stdio.h> //
 
 # define CHAR_EMPTY				'.'
@@ -24,11 +24,11 @@ typedef enum	e_mask
 	RIGHT_MASK  = 0x1111  // 0001 0001 0001 0001
 }				t_mask;
 
-// typedef union	u_t_value
-// {
-// 	uint16_t	v[4];
-// 	uint64_t	value;
-// }				t_t_value;
+typedef union	u_t_value
+{
+	uint16_t	v[4];
+	uint64_t	value;
+}				t_t_value;
 
 typedef struct	s_tetrimino
 {
@@ -36,6 +36,8 @@ typedef struct	s_tetrimino
 	char		*raw;
 	uint16_t	value;
 	uint16_t	v[4];
+	int			width;
+	int			height;
 	int			offset_x;
 	int			offset_y;
 }				t_tetrimino;
@@ -66,7 +68,15 @@ int			parse(int fd, t_tetrimino tetriminos[]);
 */
 int			move(int value, t_direction direction);
 
-// DEBUG
-void	print_16bit_representation_of_int(uint16_t value);
+/*
+**		solve.c
+*/
+t_bool		solve(t_map *map, int tetri_index);
+
+/*
+**		print.c
+*/
+void		print_16bit_representation_of_int(uint16_t value, int sep);
+void		print_map(t_map *map);
 
 #endif
