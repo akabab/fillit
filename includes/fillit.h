@@ -2,6 +2,7 @@
 # define __FILLIT_H__
 
 # include <stdint.h>
+# include <stdio.h>
 # include "stdint.h"
 
 # define CHAR_EMPTY				'.'
@@ -52,6 +53,7 @@ int			parse(int fd, t_tetrimino tetriminos[]);
 **		move.c
 */
 int			move(int value, t_direction direction);
+uint16_t		move_to_most_top_right_position(uint16_t value);
 
 // DEBUG
 void	print_16bit_representation_of_int(uint16_t value);

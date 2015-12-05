@@ -32,9 +32,14 @@ void	print_16bit_representation_of_int(uint16_t value)
 t_bool	is_correct_pattern(uint16_t value)
 {
 	static const uint16_t	correct_patterns[TETRI_PATTERNS_COUNT] = {
-		57856, 17600, 36352, 51328, 58368, 19520, 19968, 35968,
-		59392, 50240, 11776, 35008, 27648, 35904, 61440, 34952,
-		52224, 50688, 19584
+		113, 275, 71, 802, // L
+		114, 305, 39, 562,  // T
+		116, 785, 23, 547, // mirrored L		
+		54, 561, // mirrored z
+		99, 306, // z
+		15, // _
+		51, // |
+		4369 // O
 	};
 	int					i;
 
@@ -48,19 +53,19 @@ t_bool	is_correct_pattern(uint16_t value)
 	return (FALSE);
 }
 
-uint16_t		move_to_most_top_left_position(uint16_t value)
+uint16_t		move_to_most_top_right_position(uint16_t value)
 {
 	// move to most left position
-	while ((value & LEFT_MASK) == 0)
+	while ((value & RIGHT_MASK) == 0)
 	{
-		// printf("move left\n");
-		value = move(value, LEFT);
+		// printf("move right\n");
+		value = move(value, RIGHT);
 	}
 	// move to most top position
-	while ((value & TOP_MASK) == 0)
+	while ((value & BOTTOM_MASK) == 0)
 	{
-		// printf("move top\n");
-		value = move(value, TOP);
+		// printf("move bottom\n");
+		value = move(value, BOTTOM);
 	}
 	// printf("value = %d\n", value);
 	// print_16bit_representation_of_int(value);
@@ -92,8 +97,8 @@ uint16_t		hraw_to_binary_represention(char *raw)
 		}
 	}
 	print_16bit_representation_of_int(hvalue);
-	// move tetrimino to most top-left position !!
-	hvalue = move_to_most_top_left_position(hvalue);
+	// move tetrimino to most top-right position !!
+	hvalue = move_to_most_top_right_position(hvalue);
 	print_16bit_representation_of_int(hvalue);
 	// check if valid
 	return (hvalue);
@@ -116,8 +121,8 @@ uint16_t		raw_to_binary_represention(char *raw)
 		raw++;
 		i--;
 	}
-	// move tetrimino to most top-left position !!
-	value = move_to_most_top_left_position(value);
+	// move tetrimino to most top-right position !!
+	value = move_to_most_top_right_position(value);
 	// check if valid
 	if (!is_correct_pattern(value))
 		ft_putendl("invalid pattern");

@@ -20,19 +20,29 @@ t_bool	collide(t_tetrimino tetri_a, uint64_t *buffer, uint64_t *hbuffer)
 	htemp = *hbuffer;
 	tmp_b_value = tetri_a.value;
 	tmp_a_value = tetri_a.hvalue;
+	
+	ft_putendl("start");
 	print_tetriminos(tetri_a.value);
+//	print_tetriminos(tetri_a.hvalue);
 	print_tetriminos_long(*buffer);
 	print_tetriminos_long(tmp_b_value);
 	print_tetriminos_long(temp |= tmp_b_value);
 	htemp |= tmp_a_value;
 	ret = (temp ^ tmp_b_value);
 	hret = (htemp ^ tmp_a_value);
+	ft_putendl("temp");
+	print_tetriminos(temp);
+//	print_tetriminos(htemp);
+	ft_putendl("rets");
 	print_tetriminos_long(ret);
-	if (ret == *buffer && hret == *hbuffer)
+//	print_tetriminos_long(hret);
+	if (ret == *buffer)
 	{
 		*buffer = temp;
 		*hbuffer = htemp;
+		ft_putendl("result");
 		print_tetriminos(*buffer);
+//		print_tetriminos(*hbuffer);
 		return (TRUE);
 	}
 	return (FALSE);
@@ -87,22 +97,27 @@ int		main(int ac, char *av[])
 	tetriminos[0].offset_y = 1;
 	tetriminos[1].offset_x = 1;
 	tetriminos[1].offset_y = 2;
+}
+
+int	place_them(t_tetrimino *tetriminos , t_tetriminos *answer, int i, int max)
+{	
+
 	while(!collide(tetriminos[0], &buffer, &hbuffer))
 	{
 		tetriminos[0].offset_x += 2;
 	}
+
 	while(!collide(tetriminos[1], &buffer, &hbuffer))
 	{
-		uint64_t temp2 = move(tetriminos[1].value, 2);
+		uint64_t temp2 = move(tetriminos[1].value, -2);
 		tetriminos[1].value = temp2;
-		temp2 = move(tetriminos[1].hvalue, 4);
-		tetriminos[1].hvalue = temp2;
 	}
-	while(!collide(tetriminos[1], &buffer, &hbuffer))
+
+/*	while(!collide(tetriminos[1], &buffer, &hbuffer))
 	{
-		uint64_t temp2 = move(tetriminos[1].value, 2);
+		uint64_t temp2 = move(tetriminos[1].value, -2);
 		tetriminos[1].value = temp2;
-		temp2 = move(tetriminos[1].hvalue, 4);
+		temp2 = move(tetriminos[1].hvalue, -4);
 		tetriminos[1].hvalue = temp2;
 	}
 	while(!collide(tetriminos[2], &buffer, &hbuffer))
@@ -112,6 +127,8 @@ int		main(int ac, char *av[])
 		temp2 = move(tetriminos[2].hvalue, 4);
 		tetriminos[2].hvalue = temp2;
 	}
+}
+*/
 /*	while(!collide(tetriminos[0], &buffer))
 	{
 		uint64_t temp2 = move(tetriminos[0].value, 1);

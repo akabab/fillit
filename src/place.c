@@ -3,7 +3,7 @@
 void print_tetriminos(int toto)
 {
 	int i = 0;
-	uint16_t mask = 1 << 15;
+	int mask = 1 << 15;
 
 	while (mask)
 	{
