@@ -97,10 +97,6 @@ int		main(int ac, char *av[])
 	tetriminos[0].offset_y = 1;
 	tetriminos[1].offset_x = 1;
 	tetriminos[1].offset_y = 2;
-}
-
-int	place_them(t_tetrimino *tetriminos , t_tetriminos *answer, int i, int max)
-{	
 
 	while(!collide(tetriminos[0], &buffer, &hbuffer))
 	{
