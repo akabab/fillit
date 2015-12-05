@@ -7,23 +7,31 @@
 #include <stdio.h> //
 
 // [OPTI] -> by ref instead of copy ( is struct copied ? )
-t_bool	collide(t_tetrimino tetri_a, uint64_t *buffer)
+t_bool	collide(t_tetrimino tetri_a, uint64_t *buffer, uint64_t *hbuffer)
 {
 	uint64_t 		ret;
+	uint64_t 		hret;
 	uint64_t		tmp_b_value;
+	uint64_t		tmp_a_value;
 	uint64_t		temp;
+	uint64_t		htemp;
 
 	temp = *buffer;
+	htemp = *hbuffer;
 	tmp_b_value = tetri_a.value;
+	tmp_a_value = tetri_a.hvalue;
 	print_tetriminos(tetri_a.value);
 	print_tetriminos_long(*buffer);
 	print_tetriminos_long(tmp_b_value);
 	print_tetriminos_long(temp |= tmp_b_value);
+	htemp |= tmp_a_value;
 	ret = (temp ^ tmp_b_value);
+	hret = (htemp ^ tmp_a_value);
 	print_tetriminos_long(ret);
-	if (ret == *buffer)
+	if (ret == *buffer && hret == *hbuffer)
 	{
 		*buffer = temp;
+		*hbuffer = htemp;
 		print_tetriminos(*buffer);
 		return (TRUE);
 	}
@@ -46,9 +54,11 @@ int		main(int ac, char *av[])
 	t_tetrimino		tetriminos[MAX_TETRIMINOS];
 	int				tetriminos_count;
 	uint64_t			buffer;
+	uint64_t			hbuffer;
 
 	// test_bit_shifting();
 	buffer = 0;
+	hbuffer = 0;
 	if (ac != 2)
 	{
 		ft_printf("Usage..\n");
@@ -73,25 +83,36 @@ int		main(int ac, char *av[])
 
 	// RESOLVE
 	// ...
-/*	tetriminos[0].offset_x = 3;
+	tetriminos[0].offset_x = 3;
 	tetriminos[0].offset_y = 1;
 	tetriminos[1].offset_x = 1;
 	tetriminos[1].offset_y = 2;
-	while(!collide(tetriminos[0], &buffer))
+	while(!collide(tetriminos[0], &buffer, &hbuffer))
 	{
 		tetriminos[0].offset_x += 2;
 	}
-	while(!collide(tetriminos[1], &buffer))
+	while(!collide(tetriminos[1], &buffer, &hbuffer))
 	{
 		uint64_t temp2 = move(tetriminos[1].value, 2);
 		tetriminos[1].value = temp2;
+		temp2 = move(tetriminos[1].hvalue, 4);
+		tetriminos[1].hvalue = temp2;
 	}
-	while(!collide(tetriminos[1], &buffer))
+	while(!collide(tetriminos[1], &buffer, &hbuffer))
 	{
-		uint64_t temp2 = move(tetriminos[1].value, 1);
+		uint64_t temp2 = move(tetriminos[1].value, 2);
 		tetriminos[1].value = temp2;
+		temp2 = move(tetriminos[1].hvalue, 4);
+		tetriminos[1].hvalue = temp2;
 	}
-	while(!collide(tetriminos[0], &buffer))
+	while(!collide(tetriminos[2], &buffer, &hbuffer))
+	{
+		uint64_t temp2 = move(tetriminos[2].value, 2);
+		tetriminos[2].value = temp2;
+		temp2 = move(tetriminos[2].hvalue, 4);
+		tetriminos[2].hvalue = temp2;
+	}
+/*	while(!collide(tetriminos[0], &buffer))
 	{
 		uint64_t temp2 = move(tetriminos[0].value, 1);
 		tetriminos[1].value = temp2;
