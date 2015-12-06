@@ -25,6 +25,16 @@ void	reset_offsets(t_tetrimino t[], int t_count)
 	}
 }
 
+int		ft_ceil_sqrt(int n)
+{
+	int		i;
+
+	i = 0;
+	while (i * i < n)
+		i++;
+	return (i);
+}
+
 int		main(int ac, char *av[])
 {
 	int				fd;
@@ -45,6 +55,8 @@ int		main(int ac, char *av[])
 	// PARSE
 	map.t_count = parse(fd, map.t);
 
+	// map.t_count = 12;
+
 	// VERIF
 	int i = 0;
 	while (i < map.t_count)
@@ -54,15 +66,13 @@ int		main(int ac, char *av[])
 	}
 
 	// RESOLVE
-	int		size;
-	// size = ft_sqrt(map.t_count * 4);
-	map.size = 2;
+	map.size = ft_ceil_sqrt(map.t_count * 4);
 	while (map.size < 16)
 	{
 		printf("try map of size: %d\n", map.size);
 		if (solve(&map, 0))
 		{
-			print_map(&map);
+			// print_map(&map);
 			printf("solved with size: %d\n", map.size);
 			print_result_map(&map);
 			break;

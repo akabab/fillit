@@ -19,7 +19,7 @@ t_bool		place(t_map *map, t_tetrimino *t)
 			// print_16bit_representation_of_int(map->m[i + t->offset_y], 0);
 			return (FALSE);
 		}
-		i++;
+		++i;
 	}
 	// pas de collision -> insertion dans la map
 	// printf("no collision\n");
@@ -72,7 +72,7 @@ t_bool		solve(t_map *map, int tetri_index)
 			if (place(map, t))
 			{
 				// printf("did place at [%d, %d]\n", t->offset_x, t->offset_y);
-				print_map(map);
+				// print_map(map);
 				if (solve(map, tetri_index + 1))
 					return (1);
 				reset_position(map, t);
