@@ -29,7 +29,6 @@ uint16_t		move_to_most_top_left_position(uint16_t value)
 		value <<= 1;
 	while ((value & TOP_MASK) == 0)
 		value <<= 4;
-	print_16bit_representation_of_int(value, 4, 16);
 	return (value);
 }
 
