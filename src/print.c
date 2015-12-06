@@ -46,7 +46,7 @@ void		write_treti_in_result_map(char *r_map, int map_size, t_tetrimino *t, int t
 	while (i < t->height)
 	{
 		j = 0;
-		val = t->v[i];
+		val = t->bits.part[i];
 		while (j < t->width)
 		{
 			if (val & mask)

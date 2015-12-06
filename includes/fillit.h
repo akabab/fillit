@@ -25,15 +25,15 @@ typedef enum	e_mask
 	RIGHT_MASK  = 0x1111  // 0001 0001 0001 0001
 }				t_mask;
 
-typedef union	u_t_value
+typedef union	u_bit_form
 {
-	uint16_t	v[4];
-	uint64_t	value;
-}				t_t_value;
+	uint16_t	part[4];
+	uint64_t	full;
+}				t_bit_form;
 
 typedef struct	s_tetrimino
 {
-	uint16_t	v[4];
+	t_bit_form	bits;
 	uint16_t	value;
 	int			width;
 	int			height;

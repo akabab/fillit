@@ -75,11 +75,11 @@ void		set_v(t_tetrimino *t)
 	i = 0;
 	while (i < 4)
 	{
-		t->v[i] = (t->value & mask) << (i * 4);
-		if (t->v[i])
+		t->bits.part[i] = (t->value & mask) << (i * 4);
+		if (t->bits.part[i])
 		{
 			t->height++;
-			t->width = ft_max(t->width, get_width(t->v[i]));
+			t->width = ft_max(t->width, get_width(t->bits.part[i]));
 		}
 		mask >>= 4;
 		++i;

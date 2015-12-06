@@ -3,25 +3,24 @@
 t_bool		place(t_map *map, t_tetrimino *t)
 {
 	int			i;
-	uint16_t	tmp_v[4];
+	t_bit_form	tmp_bits;
 
 	// test collision
 	// [OPTI] -> inline tests instead of while
+	tmp_bits = t->bits;
+	tmp_bits.full >>= t->offset_x;
 	i = 0;
-	while (i < t->height) // [OPTI] -> test only for i < t->height
+	while (i < t->height)
 	{
-		tmp_v[i] = t->v[i] >> t->offset_x;
-		if (tmp_v[i] & map->m[i + t->offset_y])
-		{
+		if (tmp_bits.part[i] & map->m[i + t->offset_y])
 			return (FALSE);
-		}
 		i++;
 	}
 	// pas de collision -> insertion dans la map
 	i = 0;
 	while (i < t->height)
 	{
-		map->m[i + t->offset_y] |= tmp_v[i];
+		map->m[i + t->offset_y] |= tmp_bits.part[i];
 		i++;
 	}
 	return (TRUE);
@@ -30,13 +29,14 @@ t_bool		place(t_map *map, t_tetrimino *t)
 void		reset_position(t_map *map, t_tetrimino *t)
 {
 	int			i;
-	uint16_t	tmp_v[4];
+	t_bit_form	tmp_bits;
 
+	tmp_bits = t->bits;
+	tmp_bits.full >>= t->offset_x;
 	i = 0;
 	while (i < t->height)
 	{
-		tmp_v[i] = t->v[i] >> t->offset_x;
-		map->m[i + t->offset_y] &= ~tmp_v[i];
+		map->m[i + t->offset_y] &= ~tmp_bits.part[i];
 		i++;
 	}
 }
