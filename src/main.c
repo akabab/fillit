@@ -4,31 +4,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include <stdio.h> //
-
-void	reset_offsets(t_tetrimino t[], int t_count)
-{
-	int		i;
-
-	i = 0;
-	while (i < t_count)
-	{
-		t[i].offset_x = 0;
-		t[i].offset_y = 0;
-		++i;
-	}
-}
-
-int		ft_ceil_sqrt(int n)
-{
-	int		i;
-
-	i = 0;
-	while (i * i < n)
-		i++;
-	return (i);
-}
-
 int		main(int ac, char *av[])
 {
 	int				fd;
@@ -36,44 +11,14 @@ int		main(int ac, char *av[])
 
 	if (ac != 2)
 	{
-		ft_printf("Usage..\n");
+		ft_printf("Usage: %s [map.fillit]\n", av[0]);
 		return (-1);
 	}
 	fd = open(av[1], O_RDONLY);
 	if (fd == -1)
-	{
-		ft_printf("Open failed\n");
-		return (-1);
-	}
+		error_msg_exit(NULL);
 	ft_memset(&map, 0, sizeof(map));
-	// PARSE
 	map.t_count = parse(fd, map.t);
-
-	// VERIF
-	int i = 0;
-	while (i < map.t_count)
-	{
-		printf("%s -> %d, w: %d, h: %d\n", map.t[i].raw, map.t[i].value, map.t[i].width, map.t[i].height);
-		i++;
-	}
-
-	// RESOLVE
-	map.size = ft_ceil_sqrt(map.t_count * 4);
-	while (map.size < 16)
-	{
-		printf("try map of size: %d\n", map.size);
-		if (solve(&map, 0))
-		{
-			// print_map(&map);
-			printf("solved with size: %d\n", map.size);
-			print_result_map(&map);
-			break;
-		}
-		//reset map & offsets
-		ft_bzero(&map.m, sizeof(map.m));
-		reset_offsets(map.t, map.t_count);
-		map.size++;
-	}
-
+	solve(&map);
 	return (0);
 }

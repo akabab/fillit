@@ -13,26 +13,17 @@ t_bool		place(t_map *map, t_tetrimino *t)
 		tmp_v[i] = t->v[i] >> t->offset_x;
 		if (tmp_v[i] & map->m[i + t->offset_y])
 		{
-			// printf("collide at [%d, %d]\n", t->offset_x, t->offset_y);
-			// ft_putstr("val: ");
-			// print_16bit_representation_of_int(t->v[i], 0);
-			// ft_putstr("map: ");
-			// print_16bit_representation_of_int(map->m[i + t->offset_y], 0);
 			return (FALSE);
 		}
 		i++;
 	}
 	// pas de collision -> insertion dans la map
-	// printf("no collision\n");
 	i = 0;
 	while (i < t->height)
 	{
-		// printf("tmp_v[%d] = %d\n", i, tmp_v[i]);
 		map->m[i + t->offset_y] |= tmp_v[i];
-		// print_map(map);
 		i++;
 	}
-	// print_map(map);
 	return (TRUE);
 }
 
@@ -41,8 +32,6 @@ void		reset_position(t_map *map, t_tetrimino *t)
 	int			i;
 	uint16_t	tmp_v[4];
 
-	// printf("before reset\n");
-	// print_map(map);
 	i = 0;
 	while (i < t->height)
 	{
@@ -50,11 +39,9 @@ void		reset_position(t_map *map, t_tetrimino *t)
 		map->m[i + t->offset_y] &= ~tmp_v[i];
 		i++;
 	}
-	// printf("after reset\n");
-	// print_map(map);
 }
 
-t_bool		solve(t_map *map, int tetri_index)
+t_bool		resolve(t_map *map, int tetri_index)
 {
 	t_tetrimino		*t;
 
@@ -74,7 +61,7 @@ t_bool		solve(t_map *map, int tetri_index)
 			{
 				// printf("did place at [%d, %d]\n", t->offset_x, t->offset_y);
 				// print_map(map);
-				if (solve(map, tetri_index + 1))
+				if (resolve(map, tetri_index + 1))
 					return (1);
 				reset_position(map, t);
 				// and reset next tetri offsets
@@ -87,4 +74,36 @@ t_bool		solve(t_map *map, int tetri_index)
 	}
 	// printf("could not place tetri [%d]\n", tetri_index);
 	return (0);
+}
+
+void		reset_tetri_offsets(t_tetrimino t[], int t_count)
+{
+	int		i;
+
+	i = 0;
+	while (i < t_count)
+	{
+		t[i].offset_x = 0;
+		t[i].offset_y = 0;
+		i++;
+	}
+}
+
+void		solve(t_map *map)
+{
+	map->size = ft_ceil_sqrt(map->t_count * 4);
+	while (map->size < 16)
+	{
+		printf("try map of size: %d\n", map->size);
+		if (resolve(map, 0))
+		{
+			printf("solved with size: %d\n", map->size);
+			print_result_map(map);
+			break;
+		}
+		//reset map & offsets
+		ft_bzero(map->m, sizeof(map->m));
+		reset_tetri_offsets(map->t, map->t_count);
+		map->size++;
+	}
 }

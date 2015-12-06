@@ -3,6 +3,7 @@
 
 # include <stdint.h>
 # include "libft.h"
+
 # include <stdio.h> //
 
 # define CHAR_EMPTY				'.'
@@ -32,23 +33,13 @@ typedef union	u_t_value
 
 typedef struct	s_tetrimino
 {
-	int			index;
-	char		*raw;
-	uint16_t	value;
 	uint16_t	v[4];
+	uint16_t	value;
 	int			width;
 	int			height;
 	int			offset_x;
 	int			offset_y;
 }				t_tetrimino;
-
-typedef enum	e_direction
-{
-	TOP    = -4,
-	LEFT   = -1,
-	BOTTOM = +4,
-	RIGHT  = +1
-}				t_direction;
 
 typedef struct	s_map
 {
@@ -59,25 +50,25 @@ typedef struct	s_map
 }				t_map;
 
 /*
-**		parse.c
+**			parse.c
 */
 int			parse(int fd, t_tetrimino tetriminos[]);
 
 /*
-**		move.c
+**			solve.c
 */
-int			move(int value, t_direction direction);
+void		solve(t_map *map);
 
 /*
-**		solve.c
-*/
-t_bool		solve(t_map *map, int tetri_index);
-
-/*
-**		print.c
+**			print.c
 */
 void		print_16bit_representation_of_int(uint16_t value, int sep, int limit);
 void		print_map(t_map *map);
 void		print_result_map(t_map *map);
+
+/*
+**			utils.c
+*/
+int			ft_ceil_sqrt(int n);
 
 #endif
