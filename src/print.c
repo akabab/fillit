@@ -5,6 +5,7 @@ void		print_map(t_map *map)
 {
 	int		i;
 
+	i = 0;
 	while (i < map->size)
 	{
 		print_16bit_representation_of_int(map->m[i], 1, map->size);
@@ -42,11 +43,11 @@ void		write_treti_in_result_map(char *r_map, int map_size, t_tetrimino *t, int t
 
 	mask = 0x1 << 15;
 	i = 0;
-	while (i < t->height) // t->height
+	while (i < t->height)
 	{
 		j = 0;
 		val = t->v[i];
-		while (j < t->width) // t->width
+		while (j < t->width)
 		{
 			if (val & mask)
 				r_map[(t->offset_y + i) * (map_size + 1) + (t->offset_x + j)] = 'A' + tetri_index;
@@ -73,13 +74,14 @@ void		print_result_map(t_map *map)
 	while (i < map->size)
 	{
 		r_map[(i + 1) * (map->size + 1) - 1] = '\n';
-		++i;
+		i++;
 	}
 	tetri_index = 0;
 	while (tetri_index < map->t_count)
 	{
 		write_treti_in_result_map(r_map, map->size, &map->t[tetri_index], tetri_index);
-		++tetri_index;
+		tetri_index++;
 	}
 	ft_putstr(r_map);
+	ft_strdel(&r_map);
 }
