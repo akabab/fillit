@@ -3,7 +3,7 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>
-
+#include <math.h>
 #include <stdio.h> //
 
 // [OPTI] -> by ref instead of copy ( is struct copied ? )
@@ -48,6 +48,28 @@ t_bool	collide(t_tetrimino tetri_a, uint64_t *buffer, uint64_t *hbuffer)
 	return (FALSE);
 }
 
+t_bool	horizontal_collide(t_tetrimino tetri_a, uint64_t *buffer)
+{
+	uint64_t 		ret;
+	uint64_t		tmp_a_value;
+	uint64_t		temp;
+
+	while (tetri_a.offset_x > -16)
+	{
+		temp = *buffer;
+		tmp_a_value = move(tetri_a.value, tetri_a.offset_x);
+		temp |= tmp_a_value;
+		ret = (temp ^ tmp_a_value);
+		tetri_a.offset_x -= 2;
+		if (ret == *buffer)
+		{
+			*buffer = temp;
+			return(TRUE);	
+		}
+	}
+	return (FALSE);
+}
+
 void	test_bit_shifting()
 {
 	uint16_t	t = 1 << 1;
@@ -58,19 +80,47 @@ void	test_bit_shifting()
 	print_16bit_representation_of_int(t);
 }
 
+#define NOT 1;
+
+int	place_them(t_tetrimino *tetriminos, t_result answer)
+{
+	uint64_t			buffer;
+	int				index;
+
+	index = 0;
+	buffer = 0;
+	while (index < answer.count)
+	{	
+		if (!tetriminos[index].used)
+		{
+			if (horizontal_collide(tetriminos[index], &buffer))
+			{
+				print_tetriminos(buffer);
+				tetriminos[index].used )= 1;
+				place_them(tetriminos, answer);
+				if (index + 1 == answer.count)
+				return (1);
+			}
+		}
+		index++;
+	}
+	return (-1);
+}
+
 int		main(int ac, char *av[])
 {
 	int				fd;
-	t_tetrimino		tetriminos[MAX_TETRIMINOS];
+	t_tetrimino			tetriminos[MAX_TETRIMINOS];
 	int				tetriminos_count;
 	uint64_t			buffer;
 	uint64_t			hbuffer;
+	t_result			answer;
 
 	// test_bit_shifting();
 	buffer = 0;
 	hbuffer = 0;
 	if (ac != 2)
-	{
+	!{
 		ft_printf("Usage..\n");
 		return (-1);
 	}
@@ -82,7 +132,9 @@ int		main(int ac, char *av[])
 	}
 	// PARSE
 	tetriminos_count = parse(fd, tetriminos);
-
+	answer.count = tetriminos_count;
+	answer.index = 0;
+	answer.limit = -8; 
 	// VERIF
 	// int i = 0;
 	// while (i < tetriminos_count)
@@ -93,46 +145,5 @@ int		main(int ac, char *av[])
 
 	// RESOLVE
 	// ...
-	tetriminos[0].offset_x = 3;
-	tetriminos[0].offset_y = 1;
-	tetriminos[1].offset_x = 1;
-	tetriminos[1].offset_y = 2;
-
-	while(!collide(tetriminos[0], &buffer, &hbuffer))
-	{
-		tetriminos[0].offset_x += 2;
-	}
-
-	while(!collide(tetriminos[1], &buffer, &hbuffer))
-	{
-		uint64_t temp2 = move(tetriminos[1].value, -2);
-		tetriminos[1].value = temp2;
-	}
-
-/*	while(!collide(tetriminos[1], &buffer, &hbuffer))
-	{
-		uint64_t temp2 = move(tetriminos[1].value, -2);
-		tetriminos[1].value = temp2;
-		temp2 = move(tetriminos[1].hvalue, -4);
-		tetriminos[1].hvalue = temp2;
-	}
-	while(!collide(tetriminos[2], &buffer, &hbuffer))
-	{
-		uint64_t temp2 = move(tetriminos[2].value, 2);
-		tetriminos[2].value = temp2;
-		temp2 = move(tetriminos[2].hvalue, 4);
-		tetriminos[2].hvalue = temp2;
-	}
-}
-*/
-/*	while(!collide(tetriminos[0], &buffer))
-	{
-		uint64_t temp2 = move(tetriminos[0].value, 1);
-		tetriminos[1].value = temp2;
-	}
-
-//	
-//	printf("%scollide\n", collide(tetriminos[0], tetriminos[1]) ? "" : "not ");
-	*/
-	return (0);
+	place_them(tetriminos, answer);
 }

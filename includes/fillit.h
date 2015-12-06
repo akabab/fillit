@@ -34,7 +34,15 @@ typedef struct	s_tetrimino
 	uint16_t	hvalue;
 	int			offset_x;
 	int			offset_y;
+	int			used;
 }				t_tetrimino;
+
+typedef struct	s_result
+{
+	int 			count;
+	int			limit;
+	uint64_t		buffer;
+}				t_result;
 
 typedef enum	e_direction
 {
