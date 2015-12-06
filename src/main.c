@@ -19,6 +19,7 @@ int		main(int ac, char *av[])
 		error_msg_exit(NULL);
 	ft_memset(&map, 0, sizeof(map));
 	map.t_count = parse(fd, map.t);
+	close(fd);
 	solve(&map);
 	return (0);
 }
