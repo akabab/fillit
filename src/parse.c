@@ -6,12 +6,12 @@
 
 t_bool	is_correct_pattern(uint16_t value)
 {
+	int						i;
 	static const uint16_t	correct_patterns[TETRI_PATTERNS_COUNT] = {
 		57856, 17600, 36352, 51328, 58368, 19520, 19968, 35968,
 		59392, 50240, 11776, 35008, 27648, 35904, 61440, 34952,
 		52224, 50688, 19584
 	};
-	int					i;
 
 	i = 0;
 	while (i < TETRI_PATTERNS_COUNT)
@@ -27,16 +27,10 @@ uint16_t		move_to_most_top_left_position(uint16_t value)
 {
 	// move to most left position
 	while ((value & LEFT_MASK) == 0)
-	{
-		// printf("move left\n");
-		value = move(value, LEFT);
-	}
+		value <<= 1;
 	// move to most top position
 	while ((value & TOP_MASK) == 0)
-	{
-		// printf("move top\n");
-		value = move(value, TOP);
-	}
+		value <<= 4;
 	// printf("value = %d\n", value);
 	print_16bit_representation_of_int(value, 4, 16);
 	return (value);

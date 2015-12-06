@@ -6,12 +6,6 @@
 
 #include <stdio.h> //
 
-void	test_bit_shifting()
-{
-	uint16_t	t = -1;
-	print_16bit_representation_of_int(t, 4, 4);
-}
-
 void	reset_offsets(t_tetrimino t[], int t_count)
 {
 	int		i;
@@ -38,9 +32,8 @@ int		ft_ceil_sqrt(int n)
 int		main(int ac, char *av[])
 {
 	int				fd;
-	t_map			map = {0};
+	t_map			map;
 
-	// test_bit_shifting(); return (-1);
 	if (ac != 2)
 	{
 		ft_printf("Usage..\n");
@@ -52,10 +45,9 @@ int		main(int ac, char *av[])
 		ft_printf("Open failed\n");
 		return (-1);
 	}
+	ft_memset(&map, 0, sizeof(map));
 	// PARSE
 	map.t_count = parse(fd, map.t);
-
-	// map.t_count = 12;
 
 	// VERIF
 	int i = 0;

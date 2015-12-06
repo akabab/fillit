@@ -6,6 +6,7 @@ t_bool		place(t_map *map, t_tetrimino *t)
 	uint16_t	tmp_v[4];
 
 	// test collision
+	// [OPTI] -> inline tests instead of while
 	i = 0;
 	while (i < t->height) // [OPTI] -> test only for i < t->height
 	{
@@ -19,7 +20,7 @@ t_bool		place(t_map *map, t_tetrimino *t)
 			// print_16bit_representation_of_int(map->m[i + t->offset_y], 0);
 			return (FALSE);
 		}
-		++i;
+		i++;
 	}
 	// pas de collision -> insertion dans la map
 	// printf("no collision\n");
@@ -47,7 +48,7 @@ void		reset_position(t_map *map, t_tetrimino *t)
 	{
 		tmp_v[i] = t->v[i] >> t->offset_x;
 		map->m[i + t->offset_y] &= ~tmp_v[i];
-		++i;
+		i++;
 	}
 	// printf("after reset\n");
 	// print_map(map);

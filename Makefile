@@ -1,6 +1,6 @@
 CC				=	gcc -g
 NAME			=	fillit
-FLAGS			=	#-Wall -Wextra -Werror
+FLAGS			=	-Wall -Wextra -Werror
 LIB_PATH		=	libft/
 LIB				=	$(LIB_PATH)libft.a
 LIB_LINK		=	-L $(LIB_PATH) -lft
@@ -8,8 +8,7 @@ INCLUDES		=	-I $(LIB_PATH)includes -I ./includes
 SRCS			=	src/main.c			\
 					src/parse.c			\
 					src/solve.c			\
-					src/print.c			\
-					src/move.c
+					src/print.c
 OBJS			=	$(SRCS:src/%.c=obj/%.o)
 
 # COLORS
@@ -37,7 +36,7 @@ obj:
 	@mkdir -p obj
 
 obj/%.o: src/%.c ./includes/*.h
-	$(CC) $(FLAGS) $(INCLUDES) -c -o $@ $< $(LIB_LINK)
+	$(CC) $(FLAGS) $(INCLUDES) -c -o $@ $<
 	@echo "Linking" [ $< ] $(OK)
 
 clean:
