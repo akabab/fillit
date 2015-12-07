@@ -49,7 +49,7 @@ t_bool		resolve(t_map *map, int tetri_index)
 
 	t = &map->t[tetri_index];
 	prev_is_same = (tetri_index > 0 && (t_prev = &map->t[tetri_index - 1]) && t_prev->value == t->value);
-	t->offset_y = prev_is_same ? t_prev->offset_y + 1 : 0;
+	t->offset_y = prev_is_same ? t_prev->offset_y : 0;
 	t->offset_x = prev_is_same ? t_prev->offset_x + 1 : 0;
 	while (t->offset_y + t->height <= map->size) // pas en buté avec la map en bas
 	{
