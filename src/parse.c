@@ -198,6 +198,7 @@ int			parse(int fd, t_tetrimino tetriminos[MAX_TETRIMINOS])
 		}
 		// setup tetrimino
 		tetriminos[tetri_index].index = tetri_index;
+		tetriminos[tetri_index].used = 0;
 		tetriminos[tetri_index].raw = t_raw;
 		tetriminos[tetri_index].value = raw_to_binary_represention(t_raw);
 		tetriminos[tetri_index].hvalue = hraw_to_binary_represention(t_raw);

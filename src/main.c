@@ -20,10 +20,10 @@ t_bool	collide(t_tetrimino tetri_a, uint64_t *buffer, uint64_t *hbuffer)
 	htemp = *hbuffer;
 	tmp_b_value = tetri_a.value;
 	tmp_a_value = tetri_a.hvalue;
-	
+
 	ft_putendl("start");
 	print_tetriminos(tetri_a.value);
-//	print_tetriminos(tetri_a.hvalue);
+	//	print_tetriminos(tetri_a.hvalue);
 	print_tetriminos_long(*buffer);
 	print_tetriminos_long(tmp_b_value);
 	print_tetriminos_long(temp |= tmp_b_value);
@@ -32,23 +32,47 @@ t_bool	collide(t_tetrimino tetri_a, uint64_t *buffer, uint64_t *hbuffer)
 	hret = (htemp ^ tmp_a_value);
 	ft_putendl("temp");
 	print_tetriminos(temp);
-//	print_tetriminos(htemp);
+	//	print_tetriminos(htemp);
 	ft_putendl("rets");
 	print_tetriminos_long(ret);
-//	print_tetriminos_long(hret);
+	//	print_tetriminos_long(hret);
 	if (ret == *buffer)
 	{
 		*buffer = temp;
 		*hbuffer = htemp;
 		ft_putendl("result");
 		print_tetriminos(*buffer);
-//		print_tetriminos(*hbuffer);
+		//		print_tetriminos(*hbuffer);
 		return (TRUE);
 	}
 	return (FALSE);
 }
 
-t_bool	horizontal_collide(t_tetrimino tetri_a, uint64_t *buffer)
+t_bool	vertical_collide(t_tetrimino tetri_a, uint64_t *h_buffer, uint64_t *v_buffer)
+{
+	uint64_t 		ret;
+	uint64_t		tmp_a_value;
+	uint64_t		temp;
+
+	temp = *v_buffer;
+	if (tetri_a.index == 1)
+		tetri_a.offset_y = -1;
+	tmp_a_value = move(tetri_a.hvalue, tetri_a.offset_y);
+	temp |= tmp_a_value;
+	ret = (temp ^ tmp_a_value);
+	ft_putendl("vertical_try");
+	print_tetriminos(*v_buffer);
+	print_tetriminos(tmp_a_value);
+	if (ret == *v_buffer)
+	{
+		*v_buffer = temp;
+		return(TRUE);	
+	}
+	tetri_a.offset_y = 0;
+	return (FALSE);
+}
+
+t_bool	horizontal_collide(t_tetrimino tetri_a, uint64_t *h_buffer, uint64_t *v_buffer)
 {
 	uint64_t 		ret;
 	uint64_t		tmp_a_value;
@@ -56,17 +80,19 @@ t_bool	horizontal_collide(t_tetrimino tetri_a, uint64_t *buffer)
 
 	while (tetri_a.offset_x > -16)
 	{
-		temp = *buffer;
+		temp = *h_buffer;
 		tmp_a_value = move(tetri_a.value, tetri_a.offset_x);
 		temp |= tmp_a_value;
 		ret = (temp ^ tmp_a_value);
 		tetri_a.offset_x -= 2;
-		if (ret == *buffer)
+		if (ret == *h_buffer)
 		{
-			*buffer = temp;
-			return(TRUE);	
+			*h_buffer = temp;
+			if (vertical_collide(tetri_a, h_buffer, v_buffer))
+			return(TRUE);
 		}
 	}
+	tetri_a.offset_x = 0;
 	return (FALSE);
 }
 
@@ -82,29 +108,34 @@ void	test_bit_shifting()
 
 #define NOT 1;
 
+
+//backtracking, trouve une solution
 int	place_them(t_tetrimino *tetriminos, t_result answer)
 {
-	uint64_t			buffer;
+	uint64_t			h_buffer;
+	uint64_t			v_buffer;
 	int				index;
 
 	index = 0;
-	buffer = 0;
+	v_buffer = answer.v_buffer;
+	h_buffer = answer.h_buffer;
 	while (index < answer.count)
 	{	
 		if (!tetriminos[index].used)
 		{
-			if (horizontal_collide(tetriminos[index], &buffer))
+			if (horizontal_collide(tetriminos[index], &h_buffer, &v_buffer))
 			{
-				print_tetriminos(buffer);
-				tetriminos[index].used )= 1;
-				place_them(tetriminos, answer);
-				if (index + 1 == answer.count)
-				return (1);
+				tetriminos[index].used = 1;
+				print_tetriminos(h_buffer);
+				answer.h_buffer = h_buffer;
+				answer.v_buffer = v_buffer;
+				if (place_them(tetriminos, answer) == 1)
+					return (1);
 			}
 		}
 		index++;
 	}
-	return (-1);
+	return (1);
 }
 
 int		main(int ac, char *av[])
@@ -120,7 +151,7 @@ int		main(int ac, char *av[])
 	buffer = 0;
 	hbuffer = 0;
 	if (ac != 2)
-	!{
+	{
 		ft_printf("Usage..\n");
 		return (-1);
 	}
@@ -133,8 +164,9 @@ int		main(int ac, char *av[])
 	// PARSE
 	tetriminos_count = parse(fd, tetriminos);
 	answer.count = tetriminos_count;
-	answer.index = 0;
 	answer.limit = -8; 
+	answer.v_buffer = 0;
+	answer.h_buffer = 0;
 	// VERIF
 	// int i = 0;
 	// while (i < tetriminos_count)

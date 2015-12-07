@@ -41,7 +41,8 @@ typedef struct	s_result
 {
 	int 			count;
 	int			limit;
-	uint64_t		buffer;
+	uint64_t		h_buffer;
+	uint64_t		v_buffer;
 }				t_result;
 
 typedef enum	e_direction
