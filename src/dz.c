@@ -14,9 +14,8 @@ int		count_adj(t_map *map, int x, int y, int adj)
 	bit = get_bit_from_int(map->mdz[y], x);	
 	if (bit)
 		return (adj);
-	adj += 1;
 	map->mdz[y] |= 0x8000 >> x;
-	return (count_adj(map, x - 1, y, adj) + count_adj(map, x, y - 1, adj) + count_adj(map, x + 1, y, adj) + count_adj(map, x, y + 1, adj));
+	return (count_adj(map, x - 1, y, adj) + count_adj(map, x, y - 1, adj) + count_adj(map, x + 1, y, adj) + count_adj(map, x, y + 1, adj) + 1);
 }
 
 int		count_deadzones(t_map *map)
@@ -45,7 +44,7 @@ int		count_deadzones(t_map *map)
 		}
 	y++;
 	}	
-	return (dz);
+	returne(dz);
 }
 
 t_bool		is_too_much_dz(t_map *map)
