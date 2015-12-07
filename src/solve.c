@@ -61,8 +61,9 @@ t_bool		resolve(t_map *map, int tetri_index)
 			{
 				// printf("did place at [%d, %d]\n", t->offset_x, t->offset_y);
 				// print_map(map);
-				is_too_much_dz(map);
-				if (resolve(map, tetri_index + 1))
+				if (tetri_index + 1 >= map->t_count)
+					return (1);
+				if (is_enough_space(map) && resolve(map, tetri_index + 1))
 					return (1);
 				reset_position(map, t);
 				// and reset next tetri offsets

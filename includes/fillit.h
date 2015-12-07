@@ -45,12 +45,11 @@ typedef struct	s_map
 {
 	t_tetrimino	t[MAX_TETRIMINOS];
 	int			t_count;
+	int			size;
 	uint16_t	m[16];
 	uint16_t	mdz[16];
-	int			size;
-	int		n_dz;
-	int		total_space;
-	int		space_required;
+	int			total_space;
+	int			space_required;
 }				t_map;
 
 /*
@@ -62,8 +61,8 @@ int			parse(int fd, t_tetrimino tetriminos[]);
 **			solve.c
 */
 void		solve(t_map *map);
-t_bool		is_too_much_dz(t_map *map);
-int		get_bit_from_int(uint16_t value, int n);
+t_bool		is_enough_space(t_map *map);
+// int			get_bit_from_int(uint16_t value, int n);
 
 /*
 **			print.c
