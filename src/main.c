@@ -56,7 +56,10 @@ t_bool	vertical_collide(t_tetrimino tetri_a, uint64_t *h_buffer, uint64_t *v_buf
 
 	temp = *v_buffer;
 	if (tetri_a.index == 1)
+	{
 		tetri_a.offset_y = -1;
+		ft_putnbr(tetri_a.offset_x);
+	}
 	tmp_a_value = move(tetri_a.hvalue, tetri_a.offset_y);
 	temp |= tmp_a_value;
 	ret = (temp ^ tmp_a_value);
