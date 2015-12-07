@@ -44,11 +44,15 @@ void		reset_position(t_map *map, t_tetrimino *t)
 t_bool		resolve(t_map *map, int tetri_index)
 {
 	t_tetrimino		*t;
+	t_tetrimino		*t_prev;
+	t_bool			prev_is_same;
 
 	t = &map->t[tetri_index];
+	prev_is_same = (tetri_index > 0 && (t_prev = &map->t[tetri_index - 1]) && t_prev->value == t->value);
+	t->offset_y = prev_is_same ? t_prev->offset_y + 1 : 0;
+	t->offset_x = prev_is_same ? t_prev->offset_x + 1 : 0;
 	while (t->offset_y + t->height <= map->size) // pas en buté avec la map en bas
 	{
-		t->offset_x = 0;
 		while (t->offset_x + t->width <= map->size) // pas en buté avec la map a droite
 		{
 			if (place(map, t))
@@ -67,6 +71,7 @@ t_bool		resolve(t_map *map, int tetri_index)
 			t->offset_x++;
 		}
 		t->offset_y++;
+		t->offset_x = 0;
 	}
 	// printf("could not place tetri [%d]\n", tetri_index);
 	return (0);
