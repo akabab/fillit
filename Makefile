@@ -9,6 +9,7 @@ SRCS			=	src/main.c			\
 					src/parse.c			\
 					src/solve.c			\
 					src/print.c			\
+					src/dz.c			\
 					src/utils.c
 OBJS			=	$(SRCS:src/%.c=obj/%.o)
 

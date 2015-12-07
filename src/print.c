@@ -1,14 +1,14 @@
 #include "libft.h"
 #include "fillit.h"
 
-void		print_map(t_map *map)
+void		print_map(uint16_t map[], int size)
 {
 	int		i;
 
 	i = 0;
-	while (i < map->size)
+	while (i < size)
 	{
-		print_16bit_representation_of_int(map->m[i], 1, map->size);
+		print_16bit_representation_of_int(map[i], 1, size);
 		i++;
 	}
 }
