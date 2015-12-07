@@ -28,7 +28,7 @@ t_bool		is_enough_space(t_map *map)
 	n_dz = 0;
 	//clone map
 	ft_memcpy(map->mdz, map->m, sizeof(map->m));
-	print_map(map->mdz, map->size);
+	// print_map(map->mdz, map->size);
 	y = 0;
 	while (y < map->size)
 	{
@@ -39,16 +39,15 @@ t_bool		is_enough_space(t_map *map)
 			adj = count_adj(map, x, y, 0);
 			if (adj < 4)
 				n_dz += adj;
-			printf("[%d,%d] adj=%d dz=%d\n", y, x, adj, n_dz);
+			// printf("[%d,%d] adj=%d dz=%d\n", y, x, adj, n_dz);
 			if (map->total_space - n_dz <= map->space_required)
 			{
-				printf("no enought space\n");
 				return (FALSE);
 			}
 			x++;
 		}
 		y++;
 	}
-	printf("enought space\n");
+	// printf("enought space\n");
 	return (TRUE);
 }

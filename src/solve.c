@@ -45,12 +45,6 @@ t_bool		resolve(t_map *map, int tetri_index)
 {
 	t_tetrimino		*t;
 
-	if (tetri_index > map->t_count - 1) // all placés
-	{
-		// printf("did place all tetris\n");
-		return (1);
-	}
-	// printf("solve call: [%d]\n", tetri_index);
 	t = &map->t[tetri_index];
 	while (t->offset_y + t->height <= map->size) // pas en buté avec la map en bas
 	{
@@ -93,8 +87,10 @@ void		reset_tetri_offsets(t_tetrimino t[], int t_count)
 
 void		solve(t_map *map)
 {
+	// map->t_count = 11;
 	map->space_required = map->t_count * 4;
 	map->size = ft_ceil_sqrt(map->space_required);
+	// map->size = 8;
 	while (map->size < 16)
 	{
 		map->total_space = map->size * map->size;
