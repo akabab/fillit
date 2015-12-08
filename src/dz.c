@@ -42,7 +42,8 @@ t_bool		is_enough_space(t_map *map)
 			adj = count_adj(map, x, y, 0);
 			if (adj < 4)
 				n_dz += adj;
-			if (map->total_space - n_dz <= map->space_required)
+			// printf("[%d,%d] adj=%d dz=%d\n", y, x, adj, n_dz);
+			if (map->total_space - n_dz < map->space_required)
 				return (FALSE);
 			x++;
 		}
