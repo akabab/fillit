@@ -73,7 +73,6 @@ t_bool		resolve(t_map *map, int tetri_index)
 		t->offset_y++;
 		t->offset_x = 0;
 	}
-	// printf("could not place tetri [%d]\n", tetri_index);
 	return (0);
 }
 

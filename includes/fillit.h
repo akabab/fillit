@@ -55,14 +55,17 @@ typedef struct	s_map
 /*
 **			parse.c
 */
-int			parse(int fd, t_tetrimino tetriminos[]);
+void		parse(int fd, t_map *map);
 
 /*
 **			solve.c
 */
 void		solve(t_map *map);
+
+/*
+**			dz.c
+*/
 t_bool		is_enough_space(t_map *map);
-// int			get_bit_from_int(uint16_t value, int n);
 
 /*
 **			print.c

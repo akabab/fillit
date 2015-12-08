@@ -1,13 +1,13 @@
-#include "libft.h"
-#include "fillit.h"
 #include <fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "libft.h"
+#include "fillit.h"
 
-int		main(int ac, char *av[])
+int			main(int ac, char *av[])
 {
-	int				fd;
-	t_map			map;
+	int		fd;
+	t_map	map;
 
 	if (ac != 2)
 	{
@@ -18,7 +18,7 @@ int		main(int ac, char *av[])
 	if (fd == -1)
 		error_msg_exit(NULL);
 	ft_memset(&map, 0, sizeof(map));
-	map.t_count = parse(fd, map.t);
+	parse(fd, &map);
 	close(fd);
 	solve(&map);
 	return (0);

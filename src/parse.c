@@ -1,10 +1,8 @@
 #include <unistd.h>
-#include "fillit.h"
 #include "libft.h"
+#include "fillit.h"
 
-#include <stdio.h> //
-
-t_bool	is_correct_pattern(uint16_t value)
+t_bool			is_correct_pattern(uint16_t value)
 {
 	int						i;
 	static const uint16_t	correct_patterns[TETRI_PATTERNS_COUNT] = {
@@ -34,8 +32,8 @@ uint16_t		move_to_most_top_left_position(uint16_t value)
 
 uint16_t		raw_to_binary_represention(char *raw)
 {
-	int				i;
-	uint16_t		value;
+	int			i;
+	uint16_t	value;
 
 	value = 0x0000;
 	i = 0xF;
@@ -154,7 +152,7 @@ void		parse_tetri(char *tetri_raw, t_tetrimino *t)
 	set_v(t);
 }
 
-int			parse_entry(char *entry, t_tetrimino tetriminos[])
+void		parse_entry(char *entry, t_map *map)
 {
 	char	**tetriminos_tab;
 	char	**tmp_tab;
@@ -162,21 +160,20 @@ int			parse_entry(char *entry, t_tetrimino tetriminos[])
 
 	if (!(tetriminos_tab = ft_strsplit(entry, '@')))
 		error_msg_exit("split failed");
-
 	tmp_tab = tetriminos_tab;
 	tetri_index = 0;
 	while (*tmp_tab)
 	{
 		check_tetri_chars(*tmp_tab);
-		parse_tetri(*tmp_tab, &tetriminos[tetri_index]);
+		parse_tetri(*tmp_tab, &map->t[tetri_index]);
 		tmp_tab++;
 		tetri_index++;
 	}
 	free_tab(&tetriminos_tab);
-	return (tetri_index);
+	map->t_count = tetri_index;
 }
 
-int			parse(int fd, t_tetrimino tetriminos[])
+void		parse(int fd, t_map *map)
 {
 	char	buffer[BUFFER_SIZE + 1];
 	int		char_count;
@@ -184,5 +181,5 @@ int			parse(int fd, t_tetrimino tetriminos[])
 	char_count = read_input(fd, buffer);
 	check_input_length(char_count);
 	prepare_entry_for_split(buffer);
-	return (parse_entry(buffer, tetriminos));
+	parse_entry(buffer, map);
 }
