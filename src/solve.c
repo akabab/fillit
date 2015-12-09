@@ -90,7 +90,7 @@ void		clear(t_map *map)
 
 void		solve(t_map *map)
 {
-	// map->t_count = 11;
+	map->t_count = 11;
 	map->space_required = map->t_count * 4;
 	map->size = ft_ceil_sqrt(map->space_required);
 	// map->size = 8;
@@ -105,7 +105,6 @@ void		solve(t_map *map)
 			print_result_map(map);
 			break;
 		}
-		break;
 		map->size++;
 	}
 }
