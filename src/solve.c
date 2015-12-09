@@ -46,11 +46,12 @@ t_bool		resolve(t_map *map, int tetri_index)
 	t_tetrimino		*t;
 
 	t = &map->t[tetri_index];
-	t->offset_x = map->dyn_pos[t->pattern_index].x; // [OPTI] + t->width if (dyn_pos.x != 0)
+	t->offset_x = map->dyn_pos[t->pattern_index].x;
+	// t->offset_x += (t->offset_x > 0) ? t->width : 0; // [OPTI] + t->width if (dyn_pos.x != 0)
 	t->offset_y = map->dyn_pos[t->pattern_index].y;
-	while (t->offset_y + t->height <= map->size) // pas en buté avec la map en bas
+	while (t->offset_y + t->height <= map->size)
 	{
-		while (t->offset_x + t->width <= map->size) // pas en buté avec la map a droite
+		while (t->offset_x + t->width <= map->size)
 		{
 			if (set(map, t))
 			{
@@ -90,7 +91,7 @@ void		clear(t_map *map)
 
 void		solve(t_map *map)
 {
-	// map->t_count = 11;
+	map->t_count = 22;
 	map->space_required = map->t_count * 4;
 	map->size = ft_ceil_sqrt(map->space_required);
 	// map->size = 8;
