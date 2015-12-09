@@ -33,6 +33,7 @@ typedef union	u_bit_form
 
 typedef struct	s_tetrimino
 {
+	int			pattern_index;
 	t_bit_form	bits;
 	uint16_t	value;
 	int			width;
@@ -40,6 +41,12 @@ typedef struct	s_tetrimino
 	int			offset_x;
 	int			offset_y;
 }				t_tetrimino;
+
+typedef struct	s_pos
+{
+	int			x;
+	int			y;
+}				t_pos;
 
 typedef struct	s_map
 {
@@ -50,6 +57,7 @@ typedef struct	s_map
 	uint16_t	mdz[16];
 	int			total_space;
 	int			space_required;
+	t_pos		dyn_pos[19];
 }				t_map;
 
 /*

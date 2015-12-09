@@ -2,7 +2,7 @@
 
 int			get_bit_from_int(uint16_t value, int n)
 {
-	return ((value >> (0xF - n)) & 0x1); // vs (value & 0x8000 >> n)
+	return ((value >> (0xF - n)) & 0x1);
 }
 
 int			count_adj(t_map *map, int x, int y)

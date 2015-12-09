@@ -1,6 +1,6 @@
 #include "fillit.h"
 
-t_bool		place(t_map *map, t_tetrimino *t)
+t_bool		set(t_map *map, t_tetrimino *t)
 {
 	int			i;
 	t_bit_form	tmp_bits;
@@ -26,7 +26,7 @@ t_bool		place(t_map *map, t_tetrimino *t)
 	return (TRUE);
 }
 
-void		reset_position(t_map *map, t_tetrimino *t)
+void		unset(t_map *map, t_tetrimino *t)
 {
 	int			i;
 	t_bit_form	tmp_bits;
@@ -44,47 +44,46 @@ void		reset_position(t_map *map, t_tetrimino *t)
 t_bool		resolve(t_map *map, int tetri_index)
 {
 	t_tetrimino		*t;
-	t_tetrimino		*t_prev;
-	t_bool			prev_is_same;
 
 	t = &map->t[tetri_index];
-	prev_is_same = (tetri_index > 0 && (t_prev = &map->t[tetri_index - 1]) && t_prev->value == t->value);
-	t->offset_y = prev_is_same ? t_prev->offset_y : 0;
-	t->offset_x = prev_is_same ? t_prev->offset_x + 1 : 0;
+	t->offset_x = map->dyn_pos[t->pattern_index].x; // [OPTI] + t->width if (dyn_pos.x != 0)
+	t->offset_y = map->dyn_pos[t->pattern_index].y;
 	while (t->offset_y + t->height <= map->size) // pas en buté avec la map en bas
 	{
 		while (t->offset_x + t->width <= map->size) // pas en buté avec la map a droite
 		{
-			if (place(map, t))
+			if (set(map, t))
 			{
-				// printf("did place at [%d, %d]\n", t->offset_x, t->offset_y);
-				// print_map(map);
+				map->dyn_pos[t->pattern_index].x = t->offset_x;
+				map->dyn_pos[t->pattern_index].y = t->offset_y;
 				if (tetri_index + 1 >= map->t_count)
 					return (1);
 				if (is_enough_space(map) && resolve(map, tetri_index + 1))
 					return (1);
-				reset_position(map, t);
-				// and reset next tetri offsets
-				map->t[tetri_index + 1].offset_x = 0;
-				map->t[tetri_index + 1].offset_y = 0;
+				unset(map, t);
 			}
 			t->offset_x++;
 		}
 		t->offset_y++;
 		t->offset_x = 0;
 	}
+	map->dyn_pos[t->pattern_index].x = 0;
+	map->dyn_pos[t->pattern_index].y = 0;
 	return (0);
 }
 
-void		reset_tetri_offsets(t_tetrimino t[], int t_count)
+void		clear(t_map *map)
 {
 	int		i;
 
+	ft_bzero(map->m, sizeof(map->m));
+	ft_bzero(map->mdz, sizeof(map->mdz)); // quite useless but w/e
+	ft_bzero(map->dyn_pos, sizeof(map->dyn_pos));
 	i = 0;
-	while (i < t_count)
+	while (i < map->t_count)
 	{
-		t[i].offset_x = 0;
-		t[i].offset_y = 0;
+		map->t[i].offset_x = 0;
+		map->t[i].offset_y = 0;
 		i++;
 	}
 }
@@ -97,6 +96,7 @@ void		solve(t_map *map)
 	// map->size = 8;
 	while (map->size < 16)
 	{
+		clear(map);
 		map->total_space = map->size * map->size;
 		printf("try map of size: %d\n", map->size);
 		if (resolve(map, 0))
@@ -105,9 +105,7 @@ void		solve(t_map *map)
 			print_result_map(map);
 			break;
 		}
-		//reset map & offsets
-		ft_bzero(map->m, sizeof(map->m));
-		reset_tetri_offsets(map->t, map->t_count);
+		break;
 		map->size++;
 	}
 }
