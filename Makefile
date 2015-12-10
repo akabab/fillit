@@ -5,7 +5,16 @@ LIB_PATH		=	libft/
 LIB				=	$(LIB_PATH)libft.a
 LIB_LINK		=	-L $(LIB_PATH) -lft
 INCLUDES		=	-I $(LIB_PATH)includes -I ./includes
-SRCS			=	src/main.c
+SRCS			=	src/main.c			\
+					src/pattern.c		\
+					src/parse.c			\
+					src/parse_utils.c	\
+					src/binary.c		\
+					src/solve.c			\
+					src/print.c			\
+					src/dz.c			\
+					src/error.c			\
+					src/utils.c
 OBJS			=	$(SRCS:src/%.c=obj/%.o)
 
 # COLORS
@@ -23,7 +32,7 @@ OK				=	$(C_OK)OK$(C_NO)
 all: obj $(NAME)
 
 $(NAME): $(LIB) $(OBJS)
-	@$(CC) $(FLAGS) -o $@ $^ $(LIB_LINK) 
+	@$(CC) $(FLAGS) -o $@ $^ $(LIB_LINK)
 	@echo "Compiling" [ $(NAME) ] $(SUCCESS)
 
 $(LIB):
@@ -33,7 +42,7 @@ obj:
 	@mkdir -p obj
 
 obj/%.o: src/%.c ./includes/*.h
-	$(CC) $(FLAGS) $(INCLUDES) -c -o $@ $< $(LIB_LINK) 
+	@$(CC) $(FLAGS) $(INCLUDES) -c -o $@ $<
 	@echo "Linking" [ $< ] $(OK)
 
 clean:
