@@ -2,19 +2,16 @@
 #include "libft.h"
 #include "fillit.h"
 
+extern const t_pattern		g_patterns[];
+
 int				get_pattern(uint16_t value)
 {
 	int						i;
-	static const uint16_t	patterns[TETRI_PATTERNS_COUNT] = {
-		57856, 17600, 36352, 51328, 58368, 19520, 19968, 35968,
-		59392, 50240, 11776, 35008, 27648, 35904, 61440, 34952,
-		52224, 50688, 19584
-	};
 
 	i = 0;
 	while (i < TETRI_PATTERNS_COUNT)
 	{
-		if (value == patterns[i])
+		if (value == g_patterns[i].value)
 			return (i);
 		i++;
 	}
@@ -146,8 +143,8 @@ void		parse_tetri(char *tetri_raw, t_tetrimino *t)
 	t->value = raw_to_binary_represention(t_raw);
 	if ((t->pattern_index = get_pattern(t->value)) == -1)
 		error_msg_exit("invalid pattern");
-	t->offset_x = 0;
-	t->offset_y = 0;
+	t->offset.x = 0;
+	t->offset.y = 0;
 	ft_strdel(&t_raw);
 	set_v(t);
 }

@@ -1,5 +1,7 @@
 #include "fillit.h"
 
+extern const t_pattern		g_patterns[];
+
 t_bool		set(t_map *map, t_tetrimino *t)
 {
 	int			i;
@@ -8,11 +10,11 @@ t_bool		set(t_map *map, t_tetrimino *t)
 	// test collision
 	// [OPTI] -> inline tests instead of while
 	tmp_bits = t->bits;
-	tmp_bits.full >>= t->offset_x;
+	tmp_bits.full >>= t->offset.x;
 	i = 0;
 	while (i < t->height)
 	{
-		if (tmp_bits.part[i] & map->m[i + t->offset_y])
+		if (tmp_bits.part[i] & map->m[i + t->offset.y])
 			return (FALSE);
 		i++;
 	}
@@ -20,7 +22,7 @@ t_bool		set(t_map *map, t_tetrimino *t)
 	i = 0;
 	while (i < t->height)
 	{
-		map->m[i + t->offset_y] |= tmp_bits.part[i];
+		map->m[i + t->offset.y] |= tmp_bits.part[i];
 		i++;
 	}
 	return (TRUE);
@@ -32,11 +34,11 @@ void		unset(t_map *map, t_tetrimino *t)
 	t_bit_form	tmp_bits;
 
 	tmp_bits = t->bits;
-	tmp_bits.full >>= t->offset_x;
+	tmp_bits.full >>= t->offset.x;
 	i = 0;
 	while (i < t->height)
 	{
-		map->m[i + t->offset_y] &= ~tmp_bits.part[i];
+		map->m[i + t->offset.y] &= ~tmp_bits.part[i];
 		i++;
 	}
 }
@@ -46,27 +48,24 @@ t_bool		resolve(t_map *map, int tetri_index)
 	t_tetrimino		*t;
 
 	t = &map->t[tetri_index];
-	t->offset_x = map->dyn_pos[t->pattern_index].x;
-	t->offset_x += (t->offset_x > 0) ? 1 : 0; // [OPTI] + t->safe_width if (dyn_pos.x != 0)
-	t->offset_y = map->dyn_pos[t->pattern_index].y;
-	while (t->offset_y + t->height <= map->size)
+	t->offset = map->dyn_pos[t->pattern_index];
+	t->offset.x += (t->offset.x > 0) ? g_patterns[t->pattern_index].safe_offset_x : 0; // [OPTI] + t->safe_width if (dyn_pos.x != 0)
+	while (t->offset.y + t->height <= map->size)
 	{
-		while (t->offset_x + t->width <= map->size)
+		while (t->offset.x + t->width <= map->size)
 		{
 			if (set(map, t))
 			{
-				map->dyn_pos[t->pattern_index].x = t->offset_x;
-				map->dyn_pos[t->pattern_index].y = t->offset_y;
-				if (tetri_index + 1 >= map->t_count)
-					return (1);
-				if (is_enough_space(map) && resolve(map, tetri_index + 1))
+				map->dyn_pos[t->pattern_index] = t->offset;
+				if ((tetri_index + 1 >= map->t_count)
+					|| (is_enough_space(map) && resolve(map, tetri_index + 1)))
 					return (1);
 				unset(map, t);
 			}
-			t->offset_x++;
+			t->offset.x++;
 		}
-		t->offset_y++;
-		t->offset_x = 0;
+		t->offset.y++;
+		t->offset.x = 0;
 	}
 	map->dyn_pos[t->pattern_index].x = 0;
 	map->dyn_pos[t->pattern_index].y = 0;
@@ -83,15 +82,15 @@ void		clear(t_map *map)
 	i = 0;
 	while (i < map->t_count)
 	{
-		map->t[i].offset_x = 0;
-		map->t[i].offset_y = 0;
+		map->t[i].offset.x = 0;
+		map->t[i].offset.y = 0;
 		i++;
 	}
 }
 
 void		solve(t_map *map)
 {
-	map->t_count = 15;
+	// map->t_count = 15;
 	map->space_required = map->t_count * 4;
 	map->size = ft_ceil_sqrt(map->space_required);
 	// map->size = 8;

@@ -1,4 +1,4 @@
-CC				=	gcc -g
+CC				=	gcc
 NAME			=	fillit
 FLAGS			=	-Wall -Wextra -Werror
 LIB_PATH		=	libft/

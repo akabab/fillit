@@ -50,7 +50,7 @@ void		write_treti_in_result_map(char *r_map, int map_size, t_tetrimino *t, int t
 		while (j < t->width)
 		{
 			if (val & mask)
-				r_map[(t->offset_y + i) * (map_size + 1) + (t->offset_x + j)] = 'A' + tetri_index;
+				r_map[(t->offset.y + i) * (map_size + 1) + (t->offset.x + j)] = 'A' + tetri_index;
 			val <<= 1;
 			++j;
 		}
