@@ -93,10 +93,8 @@ void		solve(t_map *map)
 	{
 		clear(map);
 		map->total_space = map->size * map->size;
-		printf("try map of size: %d\n", map->size);
 		if (resolve(map, 0))
 		{
-			printf("solved with size: %d\n", map->size);
 			print_result_map(map);
 			break;
 		}
