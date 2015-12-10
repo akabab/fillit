@@ -7,8 +7,6 @@ t_bool		set(t_map *map, t_tetrimino *t)
 	int			i;
 	t_bit_form	tmp_bits;
 
-	// test collision
-	// [OPTI] -> inline tests instead of while
 	tmp_bits = t->bits;
 	tmp_bits.full >>= t->offset.x;
 	i = 0;
@@ -18,7 +16,6 @@ t_bool		set(t_map *map, t_tetrimino *t)
 			return (FALSE);
 		i++;
 	}
-	// pas de collision -> insertion dans la map
 	i = 0;
 	while (i < t->height)
 	{
@@ -49,7 +46,7 @@ t_bool		resolve(t_map *map, int tetri_index)
 
 	t = &map->t[tetri_index];
 	t->offset = map->dyn_pos[t->pattern_index];
-	t->offset.x += (t->offset.x > 0) ? g_patterns[t->pattern_index].safe_offset_x : 0; // [OPTI] + t->safe_width if (dyn_pos.x != 0)
+	t->offset.x += (t->offset.x > 0) ? g_patterns[t->pattern_index].gap_x : 0;
 	while (t->offset.y + t->height <= map->size)
 	{
 		while (t->offset.x + t->width <= map->size)
@@ -77,7 +74,7 @@ void		clear(t_map *map)
 	int		i;
 
 	ft_bzero(map->m, sizeof(map->m));
-	ft_bzero(map->mdz, sizeof(map->mdz)); // quite useless but w/e
+	ft_bzero(map->mdz, sizeof(map->mdz));
 	ft_bzero(map->dyn_pos, sizeof(map->dyn_pos));
 	i = 0;
 	while (i < map->t_count)
@@ -90,10 +87,8 @@ void		clear(t_map *map)
 
 void		solve(t_map *map)
 {
-	// map->t_count = 15;
 	map->space_required = map->t_count * 4;
 	map->size = ft_ceil_sqrt(map->space_required);
-	// map->size = 8;
 	while (map->size < 16)
 	{
 		clear(map);

@@ -1,18 +1,15 @@
 #include "fillit.h"
 
-int			get_bit_from_int(uint16_t value, int n)
+static int		count_adj(t_map *map, int x, int y)
 {
-	return ((value >> (0xF - n)) & 0x1);
-}
-
-int			count_adj(t_map *map, int x, int y)
-{
-	int		bit;
-	int		adj_sum;
+	uint16_t	tmp_value;
+	uint16_t	bit;
+	int			adj_sum;
 
 	if (x < 0 || x >= map->size || y < 0 || y >= map->size)
 		return (0);
-	bit = get_bit_from_int(map->mdz[y], x);
+	tmp_value = map->mdz[y];
+	bit = (tmp_value >> (0xF - x)) & 0x1;
 	if (bit)
 		return (0);
 	map->mdz[y] |= 0x8000 >> x;
@@ -24,12 +21,12 @@ int			count_adj(t_map *map, int x, int y)
 	return (adj_sum);
 }
 
-t_bool		is_enough_space(t_map *map)
+t_bool			is_enough_space(t_map *map)
 {
-	int		n_dz;
-	int		x;
-	int		y;
-	int		adj;
+	int			n_dz;
+	int			x;
+	int			y;
+	int			adj;
 
 	ft_memcpy(map->mdz, map->m, sizeof(map->m));
 	n_dz = 0;

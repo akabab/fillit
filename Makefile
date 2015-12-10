@@ -6,10 +6,14 @@ LIB				=	$(LIB_PATH)libft.a
 LIB_LINK		=	-L $(LIB_PATH) -lft
 INCLUDES		=	-I $(LIB_PATH)includes -I ./includes
 SRCS			=	src/main.c			\
+					src/pattern.c		\
 					src/parse.c			\
+					src/parse_utils.c	\
+					src/binary.c		\
 					src/solve.c			\
 					src/print.c			\
 					src/dz.c			\
+					src/error.c			\
 					src/utils.c
 OBJS			=	$(SRCS:src/%.c=obj/%.o)
 

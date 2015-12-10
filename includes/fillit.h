@@ -4,8 +4,6 @@
 # include <stdint.h>
 # include "libft.h"
 
-# include <stdio.h> //
-
 # define CHAR_EMPTY				'.'
 # define CHAR_BLOCK				'#'
 
@@ -35,7 +33,7 @@ typedef struct	s_pattern
 {
 	char		raw[16];
 	uint16_t	value;
-	int			safe_offset_x;
+	int			gap_x;
 }				t_pattern;
 
 typedef struct	s_pos
@@ -70,6 +68,17 @@ typedef struct	s_map
 **			parse.c
 */
 void		parse(int fd, t_map *map);
+void		parse_entry(char *entry, t_map *map);
+
+/*
+**			pattern.c
+*/
+int			get_matched_pattern_index(uint16_t value);
+
+/*
+**			binary.c
+*/
+uint16_t	raw_to_binary_represention(char *raw);
 
 /*
 **			solve.c
@@ -84,13 +93,20 @@ t_bool		is_enough_space(t_map *map);
 /*
 **			print.c
 */
-void		print_16bit_representation_of_int(uint16_t value, int sep, int limit);
-void		print_map(uint16_t map[], int size);
+void		print_value_bits(uint16_t value, int sep, int n);
+void		print_map(uint16_t map[], int map_size);
 void		print_result_map(t_map *map);
 
 /*
 **			utils.c
 */
 int			ft_ceil_sqrt(int n);
+
+/*
+**			error.c
+*/
+# define FILLIT_DEBUG		0
+
+void		fillit_error_msg_exit(char *message);
 
 #endif
