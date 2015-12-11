@@ -96,7 +96,7 @@ void		solve(t_map *map)
 		if (resolve(map, 0))
 		{
 			print_result_map(map);
-			break;
+			break ;
 		}
 		map->size++;
 	}
