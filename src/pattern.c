@@ -1,6 +1,5 @@
 #include "fillit.h"
 
-
 const t_pattern		g_patterns[TETRI_PATTERNS_COUNT] = {
 	{ "###...#.........", 57856, 3 },
 	{ ".#...#..##......", 17600, 2 },
