@@ -6,7 +6,7 @@
 /*   By: ycribier <ycribier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/11 10:42:11 by ycribier          #+#    #+#             */
-/*   Updated: 2015/12/11 10:47:49 by ycribier         ###   ########.fr       */
+/*   Updated: 2015/12/12 10:39:08 by ycribier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ int			main(int ac, char *av[])
 
 	if (ac != 2)
 	{
-		ft_printf("Usage: %s [map.fillit]\n", av[0]);
+		fillit_error_msg_exit("Usage: ./fillit [map.fillit]");
 		return (-1);
 	}
 	fd = open(av[1], O_RDONLY);
 	if (fd == -1)
-		error_msg_exit(NULL);
+		fillit_error_msg_exit("some open failed somewhere");
 	ft_memset(&map, 0, sizeof(map));
 	parse(fd, &map);
 	close(fd);
