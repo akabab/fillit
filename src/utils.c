@@ -1,3 +1,4 @@
+
 int		ft_ceil_sqrt(int n)
 {
 	int		i;
