@@ -14,7 +14,7 @@
 
 double	fdeg(double value)
 {
-	value = value % 360;
+	value = fmod(value, 360);
 	if (value < 0)
 		value += 360;
 	return (value);
@@ -22,7 +22,7 @@ double	fdeg(double value)
 
 double	frad(double value)
 {
-	value = value % (2 * M_PI);
+	value = fmod(value, 2 * M_PI);
 	if (value < 0)
 		value += 2 * M_PI;
 	return (value);
