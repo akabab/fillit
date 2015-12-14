@@ -78,7 +78,8 @@ static void		parse_tetri(char *tetri_raw, t_tetrimino *t)
 	}
 	free_tab(&t_tab);
 	t->value = raw_to_binary_represention(t_raw);
-	if ((t->pattern_index = get_matched_pattern_index(t->value)) == -1)
+	t->pattern_index = get_matched_pattern_index(t->value);
+	if (t->pattern_index == -1)
 		fillit_error_msg_exit("invalid pattern");
 	t->offset.x = 0;
 	t->offset.y = 0;

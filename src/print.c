@@ -82,7 +82,7 @@ void			print_result_map(t_map *map)
 	r_map_size = (map->size + 1) * map->size;
 	r_map = (char *)ft_strnew(r_map_size * sizeof(char));
 	if (!r_map)
-		error_msg_exit(NULL);
+		fillit_error_msg_exit(NULL);
 	ft_memset(r_map, '.', r_map_size);
 	i = 0;
 	while (i < map->size)
