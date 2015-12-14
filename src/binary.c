@@ -2,10 +2,13 @@
 
 static uint16_t		move_to_most_top_left_position(uint16_t value)
 {
-	while ((value & LEFT_MASK) == 0)
-		value <<= 1;
-	while ((value & TOP_MASK) == 0)
-		value <<= 4;
+	if (value > 0)
+	{
+		while ((value & LEFT_MASK) == 0)
+			value <<= 1;
+		while ((value & TOP_MASK) == 0)
+			value <<= 4;
+	}
 	return (value);
 }
 
@@ -16,7 +19,7 @@ uint16_t			raw_to_binary_represention(char *raw)
 
 	value = 0x0000;
 	i = 0xF;
-	while (*raw)
+	while (raw && *raw)
 	{
 		if (*raw == CHAR_BLOCK)
 			value |= 1 << i;
