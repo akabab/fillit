@@ -49,12 +49,15 @@ static void		set_v(t_tetrimino *t)
 static void		check_tetri_chars(char *tetri_raw)
 {
 	int			i;
+	char		c;
 
 	i = 0;
 	while (i < MAX_TETRIMINO_SIZE)
 	{
-		if ((((i + 1) % 5) == 0 && tetri_raw[i] != '\n')
-			|| (tetri_raw[i] != CHAR_BLOCK && tetri_raw[i] != CHAR_EMPTY))
+		c = tetri_raw[i];
+		if (((i + 1) % 5) == 0 && c != '\n')
+			fillit_error_msg_exit("invalid char");
+		if (((i + 1) % 5) != 0 && c != CHAR_BLOCK && c != CHAR_EMPTY)
 			fillit_error_msg_exit("invalid char");
 		i++;
 	}
