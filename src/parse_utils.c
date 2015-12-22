@@ -55,9 +55,8 @@ static void		check_tetri_chars(char *tetri_raw)
 	while (i < MAX_TETRIMINO_SIZE)
 	{
 		c = tetri_raw[i];
-		if (((i + 1) % 5) == 0 && c != '\n')
-			fillit_error_msg_exit("invalid char");
-		if (((i + 1) % 5) != 0 && c != CHAR_BLOCK && c != CHAR_EMPTY)
+		if (((i + 1) % 5 == 0 && c != '\n')
+			|| ((i + 1) % 5 != 0 && c != CHAR_BLOCK && c != CHAR_EMPTY))
 			fillit_error_msg_exit("invalid char");
 		i++;
 	}
