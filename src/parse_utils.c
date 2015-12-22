@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ycribier <ycribier@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2015/12/11 10:42:11 by ycribier          #+#    #+#             */
+/*   Updated: 2015/12/11 10:47:52 by ycribier         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include "fillit.h"
 
@@ -43,9 +55,8 @@ static void		check_tetri_chars(char *tetri_raw)
 	while (i < MAX_TETRIMINO_SIZE)
 	{
 		c = tetri_raw[i];
-		if (((i + 1) % 5) == 0 && c != '\n')
-			fillit_error_msg_exit("invalid char");
-		if (((i + 1) % 5) != 0 && c != CHAR_BLOCK && c != CHAR_EMPTY)
+		if (((i + 1) % 5 == 0 && c != '\n')
+			|| ((i + 1) % 5 != 0 && c != CHAR_BLOCK && c != CHAR_EMPTY))
 			fillit_error_msg_exit("invalid char");
 		i++;
 	}
