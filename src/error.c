@@ -6,10 +6,10 @@ void	fillit_error_msg_exit(char *message)
 {
 	if (message && FILLIT_DEBUG)
 	{
-		ft_putstr_fd("Err: ", 2);
-		ft_putendl_fd(message, 2);
+		ft_putstr_fd("Err: ", 1);
+		ft_putendl_fd(message, 1);
 	}
 	else
-		ft_putendl_fd("error", 2);
+		ft_putendl_fd("error", 1);
 	exit(-1);
 }
