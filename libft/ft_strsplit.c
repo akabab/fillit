@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include "libft.h"
 
-size_t	ft_wordsize(char const *s, char c)
+static size_t	ft_wordsize(char const *s, char c)
 {
 	size_t	size;
 
@@ -27,7 +27,7 @@ size_t	ft_wordsize(char const *s, char c)
 	return (size);
 }
 
-size_t	ft_countwords(char const *s, char c)
+static size_t	ft_countwords(char const *s, char c)
 {
 	size_t	count;
 
@@ -41,36 +41,36 @@ size_t	ft_countwords(char const *s, char c)
 	return (count);
 }
 
-char	**ft_strsplit(char const *s, char c)
+char			**ft_strsplit(char const *s, char c)
 {
-	char	**ptr;
+	char	**tab;
 	size_t	nb_words;
 	size_t	i;
 	size_t	word_size;
 
 	nb_words = ft_countwords(s, c);
-	ptr = malloc((nb_words + 1) * sizeof(*ptr));
-	if (ptr == NULL)
+	if (!(tab = malloc((nb_words + 1) * sizeof(*tab))))
 		return (NULL);
-	i = 0;
-	while (i < nb_words && *s != '\0')
+	i = -1;
+	while (++i < nb_words && *s)
 	{
 		while (*s == c)
 			s++;
 		word_size = ft_wordsize(s, c);
-		ptr[i] = malloc((word_size + 1) * sizeof(**ptr));
-		if (ptr[i] == NULL)
+		if (!(tab[i] = malloc((word_size + 1) * sizeof(**tab))))
+		{
+			free(tab);
 			return (NULL);
-		ft_strncpy(ptr[i], s, word_size);
-		ptr[i][word_size] = '\0';
+		}
+		ft_strncpy(tab[i], s, word_size);
+		tab[i][word_size] = '\0';
 		s += word_size;
-		i++;
 	}
-	ptr[i] = NULL;
-	return (ptr);
+	tab[i] = NULL;
+	return (tab);
 }
 
-char	**ft_strsplit_once(char const *s, char c)
+char			**ft_strsplit_once(char const *s, char c)
 {
 	char	*at;
 	size_t	at_index;

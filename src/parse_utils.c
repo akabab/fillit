@@ -57,9 +57,9 @@ static void		parse_tetri(char *tetri_raw, t_tetrimino *t)
 	int			i;
 
 	if (!(t_tab = ft_strsplit(tetri_raw, '\n')))
-		fillit_error_msg_exit("some split failed somewhere");
+		return (fillit_error_msg_exit("some split failed somewhere"));
 	if (!(t_raw = ft_strnew(16)))
-		fillit_error_msg_exit("some malloc failed somewhere");
+		return (fillit_error_msg_exit("some malloc failed somewhere"));
 	i = 0;
 	while (t_tab[i])
 	{
@@ -70,7 +70,7 @@ static void		parse_tetri(char *tetri_raw, t_tetrimino *t)
 	t->value = raw_to_binary_represention(t_raw);
 	t->pattern_index = get_matched_pattern_index(t->value);
 	if (t->pattern_index == -1)
-		fillit_error_msg_exit("invalid pattern");
+		return (fillit_error_msg_exit("invalid pattern"));
 	t->offset.x = 0;
 	t->offset.y = 0;
 	ft_strdel(&t_raw);
@@ -84,7 +84,7 @@ void			parse_entry(char *entry, t_map *map)
 	int			tetri_index;
 
 	if (!(tetriminos_tab = ft_strsplit(entry, '@')))
-		fillit_error_msg_exit("some split failed somewhere");
+		return (fillit_error_msg_exit("some split failed somewhere"));
 	tmp_tab = tetriminos_tab;
 	tetri_index = 0;
 	while (*tmp_tab)
