@@ -85,6 +85,20 @@ void		clear(t_map *map)
 	}
 }
 
+void		new_value(t_map *map)
+{
+	int				i;
+	t_tretriminos	*t;
+
+	i = 0;
+	*t = map->t;
+	while (i < MAX_TETRIMINOS)
+	{
+		t[i]->new_value= new_form(t[i]->value, map->size);
+		i++;
+	}
+}
+
 void		solve(t_map *map)
 {
 	map->space_required = map->t_count * 4;

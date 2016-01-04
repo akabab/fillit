@@ -19,10 +19,10 @@
 
 typedef enum	e_mask
 {
-	TOP_MASK = 0xF000,
-	LEFT_MASK = 0x8888,
-	BOTTOM_MASK = 0x000F,
-	RIGHT_MASK = 0x1111
+	TOP_MASK = 0xF0000000,
+	LEFT_MASK = 0x88888888,
+	BOTTOM_MASK = 0x0000000F,
+	RIGHT_MASK = 0x11111111
 }				t_mask;
 
 typedef union	u_bit_form
@@ -49,6 +49,7 @@ typedef struct	s_tetrimino
 	int			pattern_index;
 	t_bit_form	bits;
 	uint16_t	value;
+	uint64_t	new_value;
 	int			width;
 	int			height;
 	t_pos		offset;
@@ -59,6 +60,9 @@ typedef struct	s_map
 	t_tetrimino	t[MAX_TETRIMINOS];
 	int			t_count;
 	int			size;
+	uint64_t	map1;
+	uint64_t	map2;
+	uint64_t	map3;
 	uint16_t	m[16];
 	uint16_t	mdz[16];
 	int			total_space;
