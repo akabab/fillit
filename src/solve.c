@@ -43,9 +43,10 @@ void		unset(t_map *map, t_tetrimino *t)
 t_bool		resolve(t_map *map, int tetri_index)
 {
 	t_tetrimino		*t;
+	t_pos			dyn_pos_backup;
 
 	t = &map->t[tetri_index];
-	t->offset = map->dyn_pos[t->pattern_index];
+	t->offset = dyn_pos_backup = map->dyn_pos[t->pattern_index];
 	t->offset.x += (t->offset.x > 0) ? g_patterns[t->pattern_index].gap_x : 0;
 	while (t->offset.y + t->height <= map->size)
 	{
@@ -64,8 +65,7 @@ t_bool		resolve(t_map *map, int tetri_index)
 		t->offset.y++;
 		t->offset.x = 0;
 	}
-	map->dyn_pos[t->pattern_index].x = 0;
-	map->dyn_pos[t->pattern_index].y = 0;
+	map->dyn_pos[t->pattern_index] = dyn_pos_backup;
 	return (0);
 }
 
