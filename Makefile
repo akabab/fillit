@@ -19,6 +19,7 @@ SRC_BASE		=	main.c			\
 					print.c			\
 					dz.c			\
 					error.c			\
+					my_utils.c		\
 					utils.c
 
 OBJ_DIR			=	obj

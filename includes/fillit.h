@@ -2,6 +2,7 @@
 # define FILLIT_H
 
 # include <stdint.h>
+# include <stdio.h>
 # include "libft.h"
 
 # define CHAR_EMPTY				'.'
@@ -15,15 +16,23 @@
 
 # define TETRI_PATTERNS_COUNT	19
 
-# define FILLIT_DEBUG			0
+# define FILLIT_DEBUG			1
 
 typedef enum	e_mask
 {
-	TOP_MASK = 0xF0000000,
-	LEFT_MASK = 0x88888888,
-	BOTTOM_MASK = 0x0000000F,
-	RIGHT_MASK = 0x11111111
+	TOP_MASK    = 0xF000, // 1111 0000 0000 0000
+	LEFT_MASK   = 0x8888, // 1000 1000 1000 1000
+	BOTTOM_MASK = 0x000F, // 0000 0000 0000 1111
+	RIGHT_MASK  = 0x1111 
 }				t_mask;
+
+typedef enum	e_mask64
+{
+	TOP_MASK64 = 0xFF00000000000000,
+	LEFT_MASK64 = 0x8080808080808080,
+	BOTTOM_MASK64 = 0x00000000000FF,
+	RIGHT_MASK64 = 0x101010101010101
+}				t_mask64;
 
 typedef union	u_bit_form
 {
@@ -53,6 +62,8 @@ typedef struct	s_tetrimino
 	int			width;
 	int			height;
 	t_pos		offset;
+	int			new_offset;
+	int			max_offset;
 }				t_tetrimino;
 
 typedef struct	s_map
@@ -65,52 +76,56 @@ typedef struct	s_map
 	uint64_t	map3;
 	uint16_t	m[16];
 	uint16_t	mdz[16];
+	int			space;
 	int			total_space;
 	int			space_required;
 	t_pos		dyn_pos[19];
+	int			new_dynpos[19];
 }				t_map;
 
 /*
-**				parse.c
-*/
+ **				parse.c
+ */
 void			parse(int fd, t_map *map);
 void			parse_entry(char *entry, t_map *map);
 
 /*
-**				pattern.c
-*/
+ **				pattern.c
+ */
 int				get_matched_pattern_index(uint16_t value);
 
 /*
-**				binary.c
-*/
+ **				binary.c
+ */
 uint16_t		raw_to_binary_represention(char *raw);
 
 /*
-**				solve.c
-*/
+ **				solve.c
+ */
 void			solve(t_map *map);
 
 /*
-**				dz.c
-*/
+ **				dz.c
+ */
 t_bool			is_enough_space(t_map *map);
 
 /*
-**				print.c
-*/
+ **				print.c
+ */
 void			print_value_bits(uint16_t value, int sep, int n);
 void			print_map(uint16_t map[], int map_size);
 void			print_result_map(t_map *map);
 
 /*
-**				utils.c
-*/
+ **				utils.c
+ */
 int				ft_ceil_sqrt(int n);
 
 /*
-**				error.c
-*/
+ **				error.c
+ */
 void			fillit_error_msg_exit(char *message);
+
+uint64_t		new_form(uint64_t tetriminos, int newline_size);
 
 #endif

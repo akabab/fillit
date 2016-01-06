@@ -50,6 +50,8 @@ static void		write_t(char *r_map, int map_size, t_tetrimino *t, int t_index)
 		{
 			if (tmp_val & (0x1 << 15))
 			{
+				t->offset.x = t->new_offset % map_size;
+				t->offset.y = t->new_offset / map_size;
 				index = (t->offset.y + i) * (map_size + 1) + (t->offset.x + j);
 				r_map[index] = 'A' + t_index;
 			}
