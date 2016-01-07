@@ -2,6 +2,7 @@
 # define FILLIT_H
 
 # include <stdint.h>
+# include <stdlib.h>
 # include <stdio.h>
 # include "libft.h"
 
@@ -115,6 +116,7 @@ t_bool			is_enough_space(t_map *map);
 void			print_value_bits(uint16_t value, int sep, int n);
 void			print_map(uint16_t map[], int map_size);
 void			print_result_map(t_map *map);
+void			print_tetriminos_long(unsigned long toto);
 
 /*
  **				utils.c
@@ -127,5 +129,6 @@ int				ft_ceil_sqrt(int n);
 void			fillit_error_msg_exit(char *message);
 
 uint64_t		new_form(uint64_t tetriminos, int newline_size);
+int64_t     move_to_most_top_left64_position(uint64_t value);
 
 #endif
