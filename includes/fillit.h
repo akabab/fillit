@@ -117,8 +117,11 @@ t_bool			is_enough_space(t_map *map);
 void			print_value_bits(uint16_t value, int sep, int n);
 void			print_map(uint16_t map[], int map_size);
 void			print_result_map(t_map *map);
+void print_tetriminos(int toto);
 void			print_tetriminos_long(unsigned long toto);
-void			print_dyn_map(uint64_t map, unsigned int line_size);
+void			print_dyn_map(t_map *map, unsigned int line_size);
+void			print_dyn_piece(uint64_t value, unsigned int line_size);
+
 /*
  **				utils.c
  */
