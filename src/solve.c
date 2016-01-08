@@ -4,29 +4,67 @@ extern const t_pattern		g_patterns[];
 
 t_bool		set(t_map *map, t_tetrimino *t)
 {
-	int			value;
-
+	uint64_t			value;
+	
 	value = t->new_value;
-	value >>= t->new_offset;
-	if (value & map->map1)
-		return (FALSE);
-	map->map1 |= value;
-	print_tetriminos_long(value);
+	if (t->new_offset <= 32)
+	{
+		value >>= t->new_offset;
+		if (value & map->map1)
+			return (FALSE);
+		map->map1 |= value;
+		map->map2 |= (map->map1 << 32);
+	}
+	else if (t->new_offset <= 64)
+	{
+		value >>= (t->new_offset - 32);
+		if (value & map->map2)
+			return (FALSE);
+		map->map2 |= value;
+		map->map1 |= (map->map2 >> 32);
+		map->map3 |= (map->map2 << 32);
+	}
+	else
+	{
+		value >>= (t->new_offset - 64);
+		if (value & map->map3)
+			return (FALSE);
+		map->map3 |= value;
+		map->map2 |= (map->map3 >> 32);
+	}
 	return (TRUE);
 }
 
 void		unset(t_map *map, t_tetrimino *t)
 {
-	int			value;
+	uint64_t			value;
 
 	value = t->new_value;
-	value >>= t->new_offset;
-	map->map1 ^= value;
+	if (t->new_offset <= 32)
+	{
+		value >>= t->new_offset;
+		map->map1 ^= value;
+		map->map2 ^= (map->map1 << 32);
+	}
+	else if (t->new_offset <= 64)
+	{
+		value >>= (t->new_offset - 32);
+		map->map2 ^= value;
+		map->map1 ^= (map->map2 >> 32);
+		map->map3 ^= (map->map2 << 32);
+	}
+	else
+	{
+		value >>= (t->new_offset - 64);
+		map->map3 ^= value;
+		map->map2 ^= (map->map3 >> 32);
+	}
 }
 
 t_bool		resolve(t_map *map, int tetri_index)
 {
 	t_tetrimino		*t;
+	int				line_space;
 //	int				temp;
 
 	t = &map->t[tetri_index];
@@ -36,17 +74,25 @@ t_bool		resolve(t_map *map, int tetri_index)
 	t->new_offset = 0;
 	while (t->new_offset <= t->max_offset)
 	{
-		if (set(map, t))
+		line_space = t->limit_line;
+		while (line_space >= 0)
 		{
-//			map->new_dynpos[t->pattern_index] = t->new_offset;
-			if ((tetri_index + 1 >= map->t_count)
-				|| /* (is_enough_space(map) && */resolve(map, tetri_index + 1))
+			if (set(map, t))
+			{
+//				map->new_dynpos[t->pattern_index] = t->new_offset;
+				if ((tetri_index + 1 >= map->t_count)
+					|| /* (is_enough_space(map) && */resolve(map, tetri_index + 1))
 				return (1);
-			unset(map, t);
+				unset(map, t);
+			}
+			line_space--;
+			t->new_offset++;
 		}
-		t->new_offset++;
+		t->new_offset += t->width - 1;
 	}
 //	map->new_dynpos[t->pattern_index] = temp;
+	
+	print_dyn_map(map->map1, map->size);
 	return (0);
 }
 
@@ -54,23 +100,20 @@ void		clear(t_map *map)
 {
 	int		i;
 
-	ft_bzero(map->dyn_pos, sizeof(map->dyn_pos));
 	ft_bzero(map->new_dynpos, sizeof(map->new_dynpos));
 	i = 0;
-	map->map1 = 0;
 	map->map2 = 0;
 	map->map3 = 0;
 	while (i < map->t_count)
 	{
 		map->t[i].new_offset = 0;
 		map->t[i].new_value = move_to_most_top_left64_position(map->t[i].value);
-		map->t[i].new_value = new_form(map->t[i].new_value, 2);
-		print_tetriminos_long(map->t[i].new_value);
+		map->t[i].new_value = new_form(map->t[i].new_value, map->size);
 		map->t[i].max_offset = map->total_space
 			- (map->t[i].height * map->size);
+		map->t[i].limit_line = map->size - map->t[i].width;
 		i++;
 	}
-	exit(0);
 }
 
 void		solve(t_map *map)
@@ -83,7 +126,7 @@ void		solve(t_map *map)
 		clear(map);
 		if (resolve(map, 0))
 		{
-			print_tetriminos_long(map->map1);
+			print_dyn_map(map->map1, map->size);
 			break ;
 		}
 		map->size++;

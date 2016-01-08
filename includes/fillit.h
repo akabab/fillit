@@ -65,6 +65,7 @@ typedef struct	s_tetrimino
 	t_pos		offset;
 	int			new_offset;
 	int			max_offset;
+	int			limit_line;
 }				t_tetrimino;
 
 typedef struct	s_map
@@ -117,7 +118,7 @@ void			print_value_bits(uint16_t value, int sep, int n);
 void			print_map(uint16_t map[], int map_size);
 void			print_result_map(t_map *map);
 void			print_tetriminos_long(unsigned long toto);
-
+void			print_dyn_map(uint64_t map, unsigned int line_size);
 /*
  **				utils.c
  */
