@@ -31,15 +31,8 @@ void			print_dyn_piece(uint64_t value, unsigned int line_size)
 
 int64_t		move_to_most_top_left64_position(uint64_t value)
 {
-	while ((value & LEFT_MASK64) == 0)
-	{
-		value <<= 1;
-	}
-	while ((value & TOP_MASK64) == 0)
-	{
-		value <<= 8;
-	}
-	return (value);
+		value <<= 48;
+		return (value);
 }
 
 void			print_dyn_map(t_map *map, unsigned int line_size)
@@ -84,8 +77,8 @@ uint64_t		new_form(uint64_t tetriminos, int newline_size)
 	diff = newline_size - 4;
 	while (count < 4)
 	{
-		ft_putendl("piece");
-		print_tetriminos_long(mask);
+	//	ft_putendl("piece");
+	//	print_tetriminos_long(mask);
 		if (diff > 0)
 			result |= ((mask & tetriminos)
 					>> diff * count);
@@ -95,15 +88,15 @@ uint64_t		new_form(uint64_t tetriminos, int newline_size)
 		else
 			result |= (mask & tetriminos);
 		mask >>= 4;
-		ft_putendl("tetriminos");
-		print_tetriminos_long(tetriminos);
-		ft_putendl("temp");
-		print_tetriminos_long(mask & tetriminos);
-		ft_putendl("result");
-		print_tetriminos_long(result);
-		ft_putendl("end");
+//		ft_putendl("tetriminos");
+//		print_tetriminos_long(tetriminos);
+//		ft_putendl("temp");
+//		print_tetriminos_long(mask & tetriminos);
+//		ft_putendl("result");
+//		ft_putendl("end");
 		count++;
 	}
+	//	print_tetriminos_long(result);
 	return (result);
 }
 

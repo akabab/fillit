@@ -9,6 +9,7 @@ int			main(int ac, char *av[])
 	int		fd;
 	t_map	map;
 
+
 	if (ac != 2)
 	{
 		fillit_error_msg_exit("Usage: ./fillit [map.fillit]");
