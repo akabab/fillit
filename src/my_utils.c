@@ -45,16 +45,17 @@ void			print_dyn_map(t_map *map, unsigned int line_size)
 	end_map = line_size * line_size;
 	while (end_map && mask)
 	{
-		ft_putchar(((map->map1 & mask) ? '#': '.'));
+		ft_putchar(((map->map1.full & mask) ? '#': '.'));
 		mask >>= 1;
 		if ((end_map - 1) % (line_size) == 0)
 			ft_putchar('\n');
 		end_map--;
 	}
+	mask = 0x1;
 	mask <<= 63;
 	while (end_map)
 	{
-		ft_putchar(((map->map2 & mask) ? '#': '.'));
+		ft_putchar(((map->map3.full & mask) ? '#': '.'));
 		mask >>= 1;
 		if ((end_map - 1) % (line_size) == 0)
 			ft_putchar('\n');

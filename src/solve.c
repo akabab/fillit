@@ -11,37 +11,38 @@ t_bool		set(t_map *map, t_tetrimino *t)
 	{
 		value >>= t->new_offset;
 //		print_dyn_piece(value, map->size);
-		if (value & map->map1)
+		if (value & map->map1.full)
 			return (FALSE);
-		map->map1 |= value;
-		map->map2 |= (map->map1 << 32);
+		map->map1.full |= value;
+		map->map2.full |= (map->map1.full << 32);
 	}
 	else if (t->new_offset <= 64)
 	{
 		value >>= (t->new_offset - 32);
-		if (value & map->map2)
+		if (value & map->map2.full)
 			return (FALSE);
-		map->map2 |= value;
-		map->map1 |= (map->map2 >> 32);
-		map->map3 |= (map->map2 << 32);
+		map->map2.full |= value;
+		map->map1.full |= (map->map2.full >> 32);
+		map->map3.full |= (map->map2.full << 32);
 	}
 	else
 	{
 		value >>= (t->new_offset - 64);
-		if (value & map->map3)
+		if (value & map->map3.full)
 			return (FALSE);
-		map->map3 |= value;
-		map->map2 |= (map->map3 >> 32);
+		map->map3.full |= value;
+		map->map2.full |= (map->map3.full >> 32);
 	}
-/*	ft_putendl("map1");
-	print_tetriminos_long(map->map1);
+	
+	ft_putendl("map1");
+	print_tetriminos_long(map->map1.full);
 	ft_putendl("map2");
-	print_tetriminos_long(map->map2);
+	print_tetriminos_long(map->map2.full);
 	ft_putendl("map3");
-	print_tetriminos_long(map->map3);
-//	print_dyn_piece(value, map->size);
-//	print_dyn_map(map, map->size);
-*/
+	print_tetriminos_long(map->map3.full);
+	print_dyn_piece(value, map->size);
+	print_dyn_map(map, map->size);
+
 /*	ft_putendl("**** step ****");		
 		print_dyn_map(map, map->size);
 	ft_putendl("**** step ****");		
@@ -52,33 +53,42 @@ void		unset(t_map *map, t_tetrimino *t)
 {
 	uint64_t			value;
 
-/*	ft_putendl("**** unset ****");		
-	ft_putendl("map1");
-	print_tetriminos_long(map->map1);
+	ft_putendl("**** unset ****");		
 	ft_putendl("map2");
-	print_tetriminos_long(map->map2);
-*/	value = t->new_value;
+	print_tetriminos_long(map->map2.full);
+	ft_putendl("map3");
+	print_tetriminos_long(map->map3.full);
+	value = t->new_value;
 	if (t->new_offset <= 32)
 	{
-		value >>= t->new_offset;
-		map->map1 ^= value;
-		map->map2 &= (map->map1 << 32);
+		value >>= (t->new_offset);
+		map->map1.full ^= value;
+		map->map2.part[0] &= map->map1.part[2];
+		map->map2.part[1] &= map->map1.part[3];
 	}
 	else if (t->new_offset <= 64)
 	{
-		value >>= t->new_offset;
-		map->map1 ^= value;
-		map->map2 &= (map->map1 << 32);
-		map->map3 &= (map->map2 << 32);
+		value >>= (t->new_offset - 32);
+		map->map2.full ^= value;
+		map->map1.part[2] &= map->map2.part[0];
+		map->map1.part[3] &= map->map2.part[1];
+		map->map3.part[0] &= map->map2.part[2];
+		map->map3.part[1] &= map->map2.part[3];
 	}
 	else
 	{
 		value >>= (t->new_offset - 64);
-		map->map3 ^= value;
-		map->map2 &= (map->map3 >> 32);
+		map->map3.full ^= value;
+		ft_putendl("before");
+		print_tetriminos_long(map->map2.full);
+		map->map2.part[2] &= map->map3.part[0];
+		map->map2.part[3] &= map->map3.part[1];
 	}
-//	print_tetriminos_long(map->map1);
-//	print_tetriminos_long(map->map2);
+	ft_putendl("after");
+	print_tetriminos_long(map->map2.full);
+	print_tetriminos_long(map->map3.full);
+	print_tetriminos_long(map->map2.part[2]);
+	print_tetriminos_long(map->map2.part[3]);
 //	ft_putchar('\n');
 /*	ft_putendl("**** unset ****");		
 		print_dyn_piece(value, map->size);
@@ -126,8 +136,9 @@ void		clear(t_map *map)
 
 	ft_bzero(map->new_dynpos, sizeof(map->new_dynpos));
 	i = 0;
-	map->map2 = 0;
-	map->map3 = 0;
+	map->map1.full = 0;
+	map->map2.full = 0;
+	map->map3.full = 0;
 	while (i < map->t_count)
 	{
 		map->t[i].new_offset = 0;

@@ -68,14 +68,20 @@ typedef struct	s_tetrimino
 	int			limit_line;
 }				t_tetrimino;
 
+typedef union 			u_grid
+{
+	uint32_t		map_part[2];
+	uint64_t		map;
+}				t_grid;		
+
 typedef struct	s_map
 {
 	t_tetrimino	t[MAX_TETRIMINOS];
 	int			t_count;
 	int			size;
-	uint64_t	map1;
-	uint64_t	map2;
-	uint64_t	map3;
+	t_bit_form		map1;
+	t_bit_form		map2;
+	t_bit_form		map3;
 	uint16_t	m[16];
 	uint16_t	mdz[16];
 	int			space;
