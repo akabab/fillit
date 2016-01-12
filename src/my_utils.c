@@ -2,13 +2,13 @@
 #include <stdio.h>
 #include <stdint.h>
 
-void			print_dyn_piece(uint64_t value, unsigned int line_size)
+void			print_dyn_piece(unsigned __int128 value, unsigned int line_size)
 {
-	uint64_t 	mask;
-	int			end_map;
+	unsigned __int128 	mask;
+	int					end_map;
 
 	mask = 0x1;
-	mask <<= 63;
+	mask <<= 127;
 	end_map = line_size * line_size;
 	while (end_map && mask)
 	{
@@ -18,7 +18,7 @@ void			print_dyn_piece(uint64_t value, unsigned int line_size)
 			ft_putchar('\n');
 		end_map--;
 	}
-	mask <<= 63;
+	mask <<= 127;
 	while (end_map)
 	{
 		ft_putchar('.');
@@ -29,33 +29,23 @@ void			print_dyn_piece(uint64_t value, unsigned int line_size)
 	ft_putchar('\n');
 }
 
-int64_t		move_to_most_top_left64_position(uint64_t value)
+unsigned __int128		move_to_most_top_left64_position(unsigned __int128 value)
 {
-		value <<= 48;
-		return (value);
+	value <<= 112;
+	return (value);
 }
 
 void			print_dyn_map(t_map *map, unsigned int line_size)
 {
-	uint64_t 	mask;
-	int			end_map;
+	unsigned __int128 	mask;
+	int					end_map;
 
 	mask = 0x1;
-	mask <<= 63;
+	mask <<= 127;
 	end_map = line_size * line_size;
 	while (end_map && mask)
 	{
-		ft_putchar(((map->map1.full & mask) ? '#': '.'));
-		mask >>= 1;
-		if ((end_map - 1) % (line_size) == 0)
-			ft_putchar('\n');
-		end_map--;
-	}
-	mask = 0x1;
-	mask <<= 63;
-	while (end_map)
-	{
-		ft_putchar(((map->map3.full & mask) ? '#': '.'));
+		ft_putchar(((map->grid & mask) ? '#': '.'));
 		mask >>= 1;
 		if ((end_map - 1) % (line_size) == 0)
 			ft_putchar('\n');
@@ -65,21 +55,20 @@ void			print_dyn_map(t_map *map, unsigned int line_size)
 }
 
 
-uint64_t		new_form(uint64_t tetriminos, int newline_size)
+unsigned __int128		new_form(unsigned __int128 tetriminos, int newline_size)
 {
-	uint64_t	mask;
-	uint64_t	result;
-	int			count;
-	int			diff;
+	unsigned __int128	mask;
+	unsigned __int128	result;
+	int					count;
+	int					diff;
 
-	mask = 0xF000000000000000;
+	mask = 0xF;
+	mask <<= 124;
 	result = 0;
 	count = 0;
 	diff = newline_size - 4;
 	while (count < 4)
 	{
-	//	ft_putendl("piece");
-	//	print_tetriminos_long(mask);
 		if (diff > 0)
 			result |= ((mask & tetriminos)
 					>> diff * count);
@@ -89,15 +78,8 @@ uint64_t		new_form(uint64_t tetriminos, int newline_size)
 		else
 			result |= (mask & tetriminos);
 		mask >>= 4;
-//		ft_putendl("tetriminos");
-//		print_tetriminos_long(tetriminos);
-//		ft_putendl("temp");
-//		print_tetriminos_long(mask & tetriminos);
-//		ft_putendl("result");
-//		ft_putendl("end");
 		count++;
 	}
-	//	print_tetriminos_long(result);
 	return (result);
 }
 

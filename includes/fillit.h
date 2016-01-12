@@ -19,126 +19,125 @@
 
 # define FILLIT_DEBUG			1
 
-typedef enum	e_mask
+
+typedef struct	s_map	t_map;
+
+typedef enum			e_mask
 {
 	TOP_MASK    = 0xF000, // 1111 0000 0000 0000
 	LEFT_MASK   = 0x8888, // 1000 1000 1000 1000
 	BOTTOM_MASK = 0x000F, // 0000 0000 0000 1111
 	RIGHT_MASK  = 0x1111 
-}				t_mask;
+}						t_mask;
 
-typedef enum	e_mask64
-{
-	TOP_MASK64 = 0xFF00000000000000,
-	LEFT_MASK64 = 0x8080808080808080,
-	BOTTOM_MASK64 = 0x00000000000FF,
-	RIGHT_MASK64 = 0x101010101010101
-}				t_mask64;
 
-typedef union	u_bit_form
+typedef union			u_bit_form
 {
-	uint16_t	part[4];
-	uint64_t	full;
-}				t_bit_form;
+	uint16_t			part[4];
+	uint64_t			full;
+}						t_bit_form;
 
-typedef struct	s_pattern
+typedef struct			s_pattern
 {
-	char		raw[16];
-	uint16_t	value;
-	int			gap_x;
-}				t_pattern;
+	char				raw[16];
+	uint16_t			value;
+	int					gap_x;
+}						t_pattern;
 
-typedef struct	s_pos
+typedef struct			s_pos
 {
-	int			x;
-	int			y;
-}				t_pos;
+	int					x;
+	int					y;
+}						t_pos;
 
-typedef struct	s_tetrimino
+typedef struct			s_tetrimino
 {
-	int			pattern_index;
-	t_bit_form	bits;
-	uint16_t	value;
-	uint64_t	new_value;
-	int			width;
-	int			height;
-	t_pos		offset;
-	int			new_offset;
-	int			max_offset;
-	int			limit_line;
-}				t_tetrimino;
+	int					pattern_index;
+	t_bit_form			bits;
+	uint16_t			value;
+	unsigned __int128	new_value;
+	int					width;
+	int					height;
+	t_pos				offset;
+	int					new_offset;
+	int					max_offset;
+	int					limit_line;
+	int					space_linit;
+	int					max_grid;
+	int					grid_plus_offset;
+}						t_tetrimino;
 
 typedef union 			u_grid
 {
-	uint32_t		map_part[2];
-	uint64_t		map;
-}				t_grid;		
+	uint32_t			map_part[2];
+	uint64_t			map;
+}						t_grid;		
 
-typedef struct	s_map
+struct					s_map
 {
-	t_tetrimino	t[MAX_TETRIMINOS];
-	int			t_count;
-	int			size;
-	t_bit_form		map1;
-	t_bit_form		map2;
-	t_bit_form		map3;
-	uint16_t	m[16];
-	uint16_t	mdz[16];
-	int			space;
-	int			total_space;
-	int			space_required;
-	t_pos		dyn_pos[19];
-	int			new_dynpos[19];
-}				t_map;
+	t_tetrimino			t[MAX_TETRIMINOS];
+	int					size;
+	int					t_count;
+	unsigned __int128	grid;
+	unsigned __int128	grid_plus;
+	uint16_t			m[16];
+	uint16_t			mdz[16];
+	int					space;
+	int					total_space;
+	int					space_required;
+	t_pos				dyn_pos[19];
+	t_bool				(*set)(t_map *, t_tetrimino *);
+	void				(*unset)(t_map *, t_tetrimino *);
+};
 
 /*
  **				parse.c
  */
-void			parse(int fd, t_map *map);
-void			parse_entry(char *entry, t_map *map);
+void					parse(int fd, t_map *map);
+void					parse_entry(char *entry, t_map *map);
 
 /*
  **				pattern.c
  */
-int				get_matched_pattern_index(uint16_t value);
+int						get_matched_pattern_index(uint16_t value);
 
 /*
  **				binary.c
  */
-uint16_t		raw_to_binary_represention(char *raw);
+uint16_t				raw_to_binary_represention(char *raw);
 
 /*
  **				solve.c
  */
-void			solve(t_map *map);
+void					solve(t_map *map);
 
 /*
  **				dz.c
  */
-t_bool			is_enough_space(t_map *map);
+t_bool					is_enough_space(t_map *map);
 
 /*
  **				print.c
  */
-void			print_value_bits(uint16_t value, int sep, int n);
-void			print_map(uint16_t map[], int map_size);
-void			print_result_map(t_map *map);
-void print_tetriminos(int toto);
-void			print_tetriminos_long(unsigned long toto);
-void			print_dyn_map(t_map *map, unsigned int line_size);
-void			print_dyn_piece(uint64_t value, unsigned int line_size);
+void					print_value_bits(uint16_t value, int sep, int n);
+void					print_map(uint16_t map[], int map_size);
+void					print_result_map(t_map *map);
+void 					print_tetriminos(int toto);
+void					print_tetriminos_long(unsigned long toto);
+void					print_dyn_map(t_map *map, unsigned int line_size);
+void					print_dyn_piece(unsigned __int128 value, unsigned int line_size);
 
 /*
  **				utils.c
  */
-int				ft_ceil_sqrt(int n);
+int						ft_ceil_sqrt(int n);
 
 /*
  **				error.c
  */
-void			fillit_error_msg_exit(char *message);
+void					fillit_error_msg_exit(char *message);
 
-uint64_t		new_form(uint64_t tetriminos, int newline_size);
-int64_t     move_to_most_top_left64_position(uint64_t value);
+unsigned __int128		new_form(unsigned __int128  tetriminos, int newline_size);
+unsigned __int128		move_to_most_top_left64_position(unsigned __int128 value);
 
 #endif
