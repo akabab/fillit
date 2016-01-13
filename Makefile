@@ -1,6 +1,6 @@
 CC				=	gcc
 NAME			=	fillit
-FLAGS			=	-pg -Wall -Wextra -Werror
+FLAGS			=	-Wall -Wextra -Werror
 
 LIB_PATH		=	libft
 LIB				=	$(LIB_PATH)/libft.a
