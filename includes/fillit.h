@@ -76,7 +76,7 @@ typedef union 			u_grid
 struct					s_map
 {
 	t_tetrimino			t[MAX_TETRIMINOS];
-	int					size;
+	int 				size;
 	int					t_count;
 	unsigned __int128	grid;
 	unsigned __int128	grid_plus;
@@ -86,8 +86,7 @@ struct					s_map
 	int					total_space;
 	int					space_required;
 	t_pos				dyn_pos[19];
-	t_bool				(*set)(t_map *, t_tetrimino *);
-	void				(*unset)(t_map *, t_tetrimino *);
+	t_bool				(*resolve)(t_map *, int, int const);
 };
 
 /*
@@ -110,6 +109,8 @@ uint16_t				raw_to_binary_represention(char *raw);
  **				solve.c
  */
 void					solve(t_map *map);
+t_bool					resolve(t_map *map, int tetrimino, int const size);
+t_bool					resolve_plus(t_map *map, int tetrimino, int const size);
 
 /*
  **				dz.c

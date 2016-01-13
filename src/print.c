@@ -3,7 +3,7 @@
 
 void			print_map(uint16_t map[], int map_size)
 {
-	int			i;
+	int				i;
 
 	i = 0;
 	while (i < map_size)
@@ -15,8 +15,8 @@ void			print_map(uint16_t map[], int map_size)
 
 void			print_value_bits(uint16_t value, int sep, int n)
 {
-	uint16_t	mask;
-	int			i;
+	uint16_t		mask;
+	int				i;
 
 	mask = 0x1 << 15;
 	i = 1;
@@ -34,12 +34,13 @@ void			print_value_bits(uint16_t value, int sep, int n)
 	ft_putchar('\n');
 }
 
-static void		write_t(char *r_map, int map_size, t_tetrimino *t, int t_index)
+static void		write_t(char *r_map, int map_size,
+		t_tetrimino *t, int t_index)
 {
-	int			i;
-	int			j;
-	uint16_t	tmp_val;
-	int			index;
+	int				i;
+	int				j;
+	uint16_t		tmp_val;
+	int				index;
 
 	i = 0;
 	while (i < t->height)
@@ -64,10 +65,10 @@ static void		write_t(char *r_map, int map_size, t_tetrimino *t, int t_index)
 
 void			print_result_map(t_map *map)
 {
-	int			i;
-	int			tetri_index;
-	char		*r_map;
-	int			r_map_size;
+	int				i;
+	int				tetri_index;
+	char			*r_map;
+	int				r_map_size;
 
 	r_map_size = (map->size + 1) * map->size;
 	r_map = (char *)ft_strnew(r_map_size * sizeof(char));

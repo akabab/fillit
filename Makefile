@@ -1,6 +1,6 @@
 CC				=	gcc
 NAME			=	fillit
-FLAGS			=	-Wall -Wextra -Werror
+FLAGS			=	-pg -Wall -Wextra -Werror
 
 LIB_PATH		=	libft
 LIB				=	$(LIB_PATH)/libft.a
@@ -15,7 +15,8 @@ SRC_BASE		=	main.c			\
 					parse.c			\
 					parse_utils.c	\
 					binary.c		\
-					solve.c			\
+					resolve.c		\
+					resolve_plus.c	\
 					print.c			\
 					dz.c			\
 					error.c			\
