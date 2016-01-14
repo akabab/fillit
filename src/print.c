@@ -43,6 +43,7 @@ static void		write_t(char *r_map, int map_size,
 	int				index;
 
 	i = 0;
+	t->offset.x = -t->offset.x;
 	while (i < t->height)
 	{
 		j = 0;

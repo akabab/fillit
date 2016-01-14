@@ -52,26 +52,18 @@ typedef struct			s_pos
 
 typedef struct			s_tetrimino
 {
-	int					pattern_index;
+	short					pattern_index;
 	t_bit_form			bits;
 	uint16_t			value;
 	unsigned __int128	new_value;
-	int					width;
-	int					height;
+	short					width;
+	short					height;
 	t_pos				offset;
-	int					new_offset;
-	int					max_offset;
-	int					limit_line;
-	int					space_linit;
-	int					max_grid;
-	int					grid_plus_offset;
+	short				new_offset;
+	short					max_offset;
+	short					limit_line;
+	short					max_grid;
 }						t_tetrimino;
-
-typedef union 			u_grid
-{
-	uint32_t			map_part[2];
-	uint64_t			map;
-}						t_grid;		
 
 struct					s_map
 {
@@ -80,9 +72,9 @@ struct					s_map
 	int					t_count;
 	unsigned __int128	grid;
 	unsigned __int128	grid_plus;
-	uint16_t			m[16];
-	uint16_t			mdz[16];
-	int					space;
+//	uint16_t			m[16];
+//	uint16_t			mdz[16];
+//	int					space;
 	int					total_space;
 	int					space_required;
 	t_pos				dyn_pos[19];

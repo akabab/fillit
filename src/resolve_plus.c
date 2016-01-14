@@ -5,7 +5,8 @@ extern const t_pattern		g_patterns[];
 static inline t_bool		set_plus(t_map *map, t_tetrimino *t)
 {
 	unsigned __int128		value;
-
+	int						grid_plus_offset;
+	
 	t->new_offset = t->offset.y * map->size + t->offset.x;
 	value = t->new_value;
 	value >>= t->new_offset;
@@ -14,11 +15,11 @@ static inline t_bool		set_plus(t_map *map, t_tetrimino *t)
 	map->grid |= value;
 	if (t->new_offset > t->max_grid)
 	{
-		t->grid_plus_offset = t->new_offset - 128;
-		if (t->grid_plus_offset > 0)
-			value = (t->new_value >> t->grid_plus_offset);
+		grid_plus_offset = t->new_offset - 128;
+		if (grid_plus_offset > 0)
+			value = (t->new_value >> grid_plus_offset);
 		else
-			value = (t->new_value << t->grid_plus_offset);
+			value = (t->new_value << grid_plus_offset);
 		if (value & map->grid_plus)
 			return (FALSE);
 		map->grid_plus |= value;
@@ -30,16 +31,17 @@ static inline t_bool		set_plus(t_map *map, t_tetrimino *t)
 static inline void		unset_plus(t_map *map, t_tetrimino *t)
 {
 	unsigned __int128		value;
+	int						grid_plus_offset;
 
 	value = (t->new_value >> t->new_offset);
 	map->grid ^= value;
 	if (t->new_offset > t->max_grid)
 	{
-		t->grid_plus_offset = t->new_offset - 128;
-		if (t->grid_plus_offset > 0)
-			value = (t->new_value >> t->grid_plus_offset);
+		grid_plus_offset = t->new_offset - 128;
+		if (grid_plus_offset > 0)
+			value = (t->new_value >> grid_plus_offset);
 		else
-			value = (t->new_value << t->grid_plus_offset);
+			value = (t->new_value << grid_plus_offset);
 		map->grid_plus ^= value;
 	}
 }

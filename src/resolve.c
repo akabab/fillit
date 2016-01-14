@@ -14,7 +14,7 @@ static inline t_bool		set(t_map *map, t_tetrimino *t)
 	return (TRUE);
 }
 
-static inline void		unset(t_map *map, t_tetrimino *t)
+static inline void			unset(t_map *map, t_tetrimino *t)
 {
 	unsigned __int128		value;
 
@@ -22,10 +22,10 @@ static inline void		unset(t_map *map, t_tetrimino *t)
 	map->grid ^= value;
 }
 
-t_bool		resolve(t_map *map, int tetri_index, int const size)
+t_bool						resolve(t_map *map, int tetri_index, int const size)
 {
-	t_tetrimino		*t;
-	t_pos			dyn_pos_backup;
+	t_tetrimino				*t;
+	t_pos					dyn_pos_backup;
 
 	t = &map->t[tetri_index];
 	t->offset = map->dyn_pos[t->pattern_index];
@@ -33,13 +33,13 @@ t_bool		resolve(t_map *map, int tetri_index, int const size)
 	t->offset.x += (t->offset.x > 0) ? g_patterns[t->pattern_index].gap_x : 0;
 	while (t->offset.y <= t->max_offset)
 	{
-		while (t->offset.x <= t->limit_line)
+		while (t->offset.x <= t-> limit_line)
 		{
 			if (set(map, t))
 			{
 				map->dyn_pos[t->pattern_index] = t->offset;
 				if (((tetri_index + 1 >= map->t_count)
-					|| /*(is_enough_space(map) &&*/ resolve(map, tetri_index + 1, size)))
+					|| resolve(map, tetri_index + 1, size)))
 					return (1);
 				unset(map, t);
 			}

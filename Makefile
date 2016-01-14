@@ -18,7 +18,6 @@ SRC_BASE		=	main.c			\
 					resolve.c		\
 					resolve_plus.c	\
 					print.c			\
-					dz.c			\
 					error.c			\
 					my_utils.c		\
 					utils.c
