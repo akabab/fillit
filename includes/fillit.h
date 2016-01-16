@@ -4,6 +4,7 @@
 # include <stdint.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include <unistd.h>
 # include "libft.h"
 
 # define CHAR_EMPTY				'.'
@@ -30,18 +31,13 @@ typedef enum			e_mask
 	RIGHT_MASK  = 0x1111 
 }						t_mask;
 
-
-typedef union			u_bit_form
-{
-	uint16_t			part[4];
-	uint64_t			full;
-}						t_bit_form;
-
 typedef struct			s_pattern
 {
-	char				raw[16];
 	uint16_t			value;
-	int					gap_x;
+	short				gap_x;
+	short				width;
+//	char				raw[16];
+	short				height;
 }						t_pattern;
 
 typedef struct			s_pos
@@ -52,17 +48,17 @@ typedef struct			s_pos
 
 typedef struct			s_tetrimino
 {
-	short					pattern_index;
-	t_bit_form			bits;
+	short				pattern_index;
+	short				new_offset;
+	short				max_offset;
+	short				limit_line;
+	short				max_grid;
+	short				width;
+	short				height;
+	short				gap_x;
 	uint16_t			value;
 	unsigned __int128	new_value;
-	short					width;
-	short					height;
 	t_pos				offset;
-	short				new_offset;
-	short					max_offset;
-	short					limit_line;
-	short					max_grid;
 }						t_tetrimino;
 
 struct					s_map
@@ -72,9 +68,6 @@ struct					s_map
 	int					t_count;
 	unsigned __int128	grid;
 	unsigned __int128	grid_plus;
-//	uint16_t			m[16];
-//	uint16_t			mdz[16];
-//	int					space;
 	int					total_space;
 	int					space_required;
 	t_pos				dyn_pos[19];
@@ -90,7 +83,7 @@ void					parse_entry(char *entry, t_map *map);
 /*
  **				pattern.c
  */
-int						get_matched_pattern_index(uint16_t value);
+int						get_matched_pattern_index(t_tetrimino *t);
 
 /*
  **				binary.c

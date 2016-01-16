@@ -43,12 +43,11 @@ static void		write_t(char *r_map, int map_size,
 	int				index;
 
 	i = 0;
-	t->offset.x = -t->offset.x;
-	while (i < t->height)
+	tmp_val = t->value;
+	while (i < 16)
 	{
 		j = 0;
-		tmp_val = t->bits.part[i];
-		while (j < t->width)
+		while (j < 4)
 		{
 			if (tmp_val & (0x1 << 15))
 			{

@@ -1,7 +1,5 @@
 #include "fillit.h"
 
-extern const t_pattern		g_patterns[];
-
 static inline t_bool		set_plus(t_map *map, t_tetrimino *t)
 {
 	unsigned __int128		value;
@@ -54,7 +52,7 @@ t_bool		resolve_plus(t_map *map, int tetri_index, int const size)
 	t = &map->t[tetri_index];
 	t->offset = map->dyn_pos[t->pattern_index];
 	dyn_pos_backup = map->dyn_pos[t->pattern_index];
-	t->offset.x += (t->offset.x > 0) ? g_patterns[t->pattern_index].gap_x : 0;
+	t->offset.x += (t->offset.x > 0) ? t->gap_x : 0;
 	while (t->offset.y <= t->max_offset)
 	{
 		while (t->offset.x <= t->limit_line)
