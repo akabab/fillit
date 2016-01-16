@@ -4,8 +4,17 @@
 #include "libft.h"
 #include "fillit.h"
 
+static inline void		choose_resolve(t_map *map)
+{
+	if (map->size < 8)
+		map->resolve = resolve_moins;
+	else if (map > 12)
+		map->resolve = resolve_plus;
+	else
+		map->resolve = resolve;
+}
 
-void		clear(t_map *map)
+static inline void		clear(t_map *map)
 {
 	int		i;
 
@@ -13,7 +22,7 @@ void		clear(t_map *map)
 	map->grid = 0;
 	map->grid_plus = 0;
 	ft_bzero(map->dyn_pos, sizeof(map->dyn_pos));
-	map->resolve = (map->size < 12) ? resolve : resolve_plus;
+	choose(resove->map)
 	while (i < map->t_count)
 	{
 		map->t[i].offset.x = 0;
