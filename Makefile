@@ -17,6 +17,7 @@ SRC_BASE		=	main.c			\
 					binary.c		\
 					resolve.c		\
 					resolve_plus.c	\
+					resolve_moins.c	\
 					print.c			\
 					error.c			\
 					my_utils.c		\

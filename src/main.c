@@ -6,9 +6,11 @@
 
 static inline void		choose_resolve(t_map *map)
 {
-	if (map->size < 8)
+	if (map->size < 9)
+	{
 		map->resolve = resolve_moins;
-	else if (map > 12)
+	}
+	else if (map->size > 11)
 		map->resolve = resolve_plus;
 	else
 		map->resolve = resolve;
@@ -21,14 +23,17 @@ static inline void		clear(t_map *map)
 	i = 0;
 	map->grid = 0;
 	map->grid_plus = 0;
+	map->grid_moins = 0;
 	ft_bzero(map->dyn_pos, sizeof(map->dyn_pos));
-	choose(resove->map)
+	choose_resolve(map);
 	while (i < map->t_count)
 	{
 		map->t[i].offset.x = 0;
 		map->t[i].offset.y = 0;
-		map->t[i].new_value = move_to_most_top_left64_position(map->t[i].value);
-		map->t[i].new_value = new_form(map->t[i].new_value, map->size);
+		map->t[i].new_value = move_to_most_top_left128_position(map->t[i].value);
+		map->t[i].new_value = new_form128(map->t[i].new_value, map->size);
+		map->t[i].alt_value = move_to_most_top_left64_position(map->t[i].value);
+		map->t[i].alt_value = new_form64(map->t[i].alt_value, map->size);
 		map->t[i].max_offset = map->total_space - (map->t[i].height * map->size);
 		map->t[i].max_grid = 128 - (map->t[i].height * map->size);
 		map->t[i].limit_line = map->size - map->t[i].width;

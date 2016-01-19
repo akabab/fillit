@@ -36,7 +36,6 @@ typedef struct			s_pattern
 	uint16_t			value;
 	short				gap_x;
 	short				width;
-//	char				raw[16];
 	short				height;
 }						t_pattern;
 
@@ -57,6 +56,7 @@ typedef struct			s_tetrimino
 	short				height;
 	short				gap_x;
 	uint16_t			value;
+	uint64_t			alt_value;
 	unsigned __int128	new_value;
 	t_pos				offset;
 }						t_tetrimino;
@@ -68,6 +68,7 @@ struct					s_map
 	int					t_count;
 	unsigned __int128	grid;
 	unsigned __int128	grid_plus;
+	uint64_t			grid_moins;
 	int					total_space;
 	int					space_required;
 	t_pos				dyn_pos[19];
@@ -96,6 +97,7 @@ uint16_t				raw_to_binary_represention(char *raw);
 void					solve(t_map *map);
 t_bool					resolve(t_map *map, int tetrimino, int const size);
 t_bool					resolve_plus(t_map *map, int tetrimino, int const size);
+t_bool					resolve_moins(t_map *map, int tetrimino, int const size);
 
 /*
  **				dz.c
@@ -123,7 +125,9 @@ int						ft_ceil_sqrt(int n);
  */
 void					fillit_error_msg_exit(char *message);
 
-unsigned __int128		new_form(unsigned __int128  tetriminos, int newline_size);
-unsigned __int128		move_to_most_top_left64_position(unsigned __int128 value);
+uint64_t				new_form64(uint64_t  tetriminos, int newline_size);
+uint64_t				move_to_most_top_left64_position(uint64_t value);
+unsigned __int128		new_form128(unsigned __int128  tetriminos, int newline_size);
+unsigned __int128		move_to_most_top_left128_position(unsigned __int128 value);
 
 #endif

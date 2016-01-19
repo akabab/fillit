@@ -8,7 +8,7 @@ void			print_dyn_piece(unsigned __int128 value, unsigned int line_size)
 	int					end_map;
 
 	mask = 0x1;
-	mask <<= 127;
+	mask <<= 63;
 	end_map = line_size * line_size;
 	while (end_map && mask)
 	{
@@ -29,9 +29,15 @@ void			print_dyn_piece(unsigned __int128 value, unsigned int line_size)
 	ft_putchar('\n');
 }
 
-unsigned __int128		move_to_most_top_left64_position(unsigned __int128 value)
+unsigned __int128		move_to_most_top_left128_position(unsigned __int128 value)
 {
 	value <<= 112;
+	return (value);
+}
+
+uint64_t		move_to_most_top_left64_position(uint64_t value)
+{
+	value <<= 48;
 	return (value);
 }
 
@@ -54,8 +60,35 @@ void			print_dyn_map(t_map *map, unsigned int line_size)
 	ft_putchar('\n');
 }
 
+uint64_t			new_form64(uint64_t tetriminos, int newline_size)
+{
+	uint64_t	mask;
+	uint64_t	result;
+	int			count;
+	int			diff;
 
-unsigned __int128		new_form(unsigned __int128 tetriminos, int newline_size)
+	mask = 0xF;
+	mask <<= 60;
+	result = 0;
+	count = 0;
+	diff = newline_size - 4;
+	while (count < 4)
+	{
+		if (diff > 0)
+			result |= ((mask & tetriminos)
+					>> diff * count);
+		else if (diff < 0)
+			result |= ((mask & tetriminos)
+					<< (-diff) * count);
+		else
+			result |= (mask & tetriminos);
+		mask >>= 4;
+		count++;
+	}
+	return (result);
+}
+
+unsigned __int128		new_form128(unsigned __int128 tetriminos, int newline_size)
 {
 	unsigned __int128	mask;
 	unsigned __int128	result;

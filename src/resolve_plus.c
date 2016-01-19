@@ -61,7 +61,7 @@ t_bool		resolve_plus(t_map *map, int tetri_index, int const size)
 			{
 				map->dyn_pos[t->pattern_index] = t->offset;
 				if (((tetri_index + 1 >= map->t_count)
-					|| /*(is_enough_space(map) &&*/ resolve(map, tetri_index + 1, size)))
+					|| /*(is_enough_space(map) &&*/ resolve_plus(map, tetri_index + 1, size)))
 					return (1);
 				unset_plus(map, t);
 			}
