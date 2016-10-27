@@ -1,5 +1,5 @@
 #include "fillit.h"
-
+#include <stdio.h>
 extern const t_pattern		g_patterns[];
 
 t_bool		set(t_map *map, t_tetrimino *t)
@@ -40,7 +40,7 @@ void		unset(t_map *map, t_tetrimino *t)
 	}
 }
 
-t_bool		resolve(t_map *map, int tetri_index)
+t_bool		resolve(t_map *map, int tetri_index, int depth)
 {
 	t_tetrimino		*t;
 	t_pos			dyn_pos_backup;
@@ -48,7 +48,9 @@ t_bool		resolve(t_map *map, int tetri_index)
 	t = &map->t[tetri_index];
 	t->offset = dyn_pos_backup = map->dyn_pos[t->pattern_index];
 	t->offset.x += (t->offset.x > 0) ? g_patterns[t->pattern_index].gap_x : 0;
-	while (t->offset.y + t->height <= map->size)
+	if (tetri_index > 0)
+        depth = (map->t[tetri_index - 1].value == t->value) ? depth + 1 : 0;
+    while (t->offset.y + t->height <= map->size)
 	{
 		while (t->offset.x + t->width <= map->size)
 		{
@@ -56,17 +58,19 @@ t_bool		resolve(t_map *map, int tetri_index)
 			{
 				map->dyn_pos[t->pattern_index] = t->offset;
 				if ((tetri_index + 1 >= map->t_count)
-					|| (/*is_enough_space(map) && */resolve(map, tetri_index + 1)))
+					|| (/*is_enough_space(map) && */resolve(map, tetri_index + 1, depth)))
 					return (1);
 				unset(map, t);
-			}
+			    if (depth > 0)
+                    return (0);
+            }
 			t->offset.x++;
 		}
 		t->offset.y++;
 		t->offset.x = 0;
 	}
-	map->dyn_pos[t->pattern_index] = dyn_pos_backup;
-	return (0);
+    map->dyn_pos[t->pattern_index] = dyn_pos_backup;
+    return (0);
 }
 
 void		clear(t_map *map)
@@ -87,13 +91,18 @@ void		clear(t_map *map)
 
 void		solve(t_map *map)
 {
-	map->space_required = map->t_count * 4;
+	int     depth;
+
+    map->space_required = map->t_count * 4;
 	map->size = ft_ceil_sqrt(map->space_required);
-	while (map->size < 16)
+    depth = 0;
+    if (map->t_count > 1 && map->t[0].value == map->t[1].value)
+        depth = 1;
+    while (map->size < 16)
 	{
-		clear(map);
+        clear(map);
 		map->total_space = map->size * map->size;
-		if (resolve(map, 0))
+		if (resolve(map, 0, depth))
 		{
 			print_result_map(map);
 			break ;
