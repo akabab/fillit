@@ -61,7 +61,7 @@ t_bool		resolve(t_map *map, int tetri_index, int depth)
 					|| (/*is_enough_space(map) && */resolve(map, tetri_index + 1, depth)))
 					return (1);
 				unset(map, t);
-			    if (depth > 0)
+			    if (depth > 1)
                     return (0);
             }
 			t->offset.x++;
@@ -91,18 +91,13 @@ void		clear(t_map *map)
 
 void		solve(t_map *map)
 {
-	int     depth;
-
     map->space_required = map->t_count * 4;
 	map->size = ft_ceil_sqrt(map->space_required);
-    depth = 0;
-    if (map->t_count > 1 && map->t[0].value == map->t[1].value)
-        depth = 1;
     while (map->size < 16)
 	{
         clear(map);
 		map->total_space = map->size * map->size;
-		if (resolve(map, 0, depth))
+		if (resolve(map, 0, 0))
 		{
 			print_result_map(map);
 			break ;
